@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeutschLernen - Belajar Mandiri Jerman A1-B2</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .flashcard {
+      perspective: 1000px;
+    }
+    .flashcard-inner {
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    .flashcard.flipped .flashcard-inner {
+      transform: rotateY(180deg);
+    }
+    .flashcard-front, .flashcard-back {
+      backface-visibility: hidden;
+    }
+    .flashcard-back {
+      transform: rotateY(180deg);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- HEADER / NAVIGATION -->
+  <header class="bg-gradient-to-r from-amber-500 via-red-500 to-black text-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div class="flex items-center gap-3">
+        <span class="text-3xl">🇩🇪</span>
+        <div>
+          <h1 class="text-xl font-bold tracking-tight">DeutschLernen</h1>
+          <p class="text-xs text-amber-200">Asisten Belajar Jerman Mandiri A1-B2</p>
+        </div>
+      </div>
+      <!-- Statistik Belajar / Gamifikasi -->
+      <div class="flex items-center gap-6 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full text-sm">
+        <div class="flex items-center gap-1.5" title="XP (Poin Pengalaman)">
+          <i class="fa-solid fa-star text-amber-300"></i>
+          <span class="font-bold text-amber-100" id="xp-display">0 XP</span>
+        </div>
+        <div class="flex items-center gap-1.5" title="Streak Belajar">
+          <i class="fa-solid fa-fire text-orange-400"></i>
+          <span class="font-bold text-orange-100" id="streak-display">0 Hari</span>
+        </div>
+        <div class="flex items-center gap-1.5" title="Level Anda">
+          <i class="fa-solid fa-graduation-cap text-blue-300"></i>
+          <span class="font-bold text-blue-100" id="user-level-badge">A1</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-8">
+    
+    <!-- LEVEL & SELECTION CONTROLLER -->
+    <section class="mb-8 bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col md:flex-row gap-6 items-center justify-between">
+      <div>
+        <h2 class="text-lg font-bold text-slate-700 mb-1">Target Belajar Anda Hari Ini</h2>
+        <p class="text-sm text-slate-500">Pilih level bahasa Jerman untuk menyesuaikan tingkat kesulitan.</p>
+      </div>
+      <div class="flex flex-wrap gap-2 w-full md:w-auto">
+        <button onclick="setLevel('A1')" id="btn-lvl-A1" class="level-btn flex-1 md:flex-none px-6 py-2.5 rounded-xl font-bold text-sm border-2 border-amber-500 bg-amber-500 text-white shadow-md shadow-amber-200 transition-all">A1 (Pemula)</button>
+        <button onclick="setLevel('A2')" id="btn-lvl-A2" class="level-btn flex-1 md:flex-none px-6 py-2.5 rounded-xl font-bold text-sm border-2 border-slate-200 text-slate-600 hover:border-amber-500 hover:text-amber-500 transition-all">A2 (Lanjutan)</button>
+        <button onclick="setLevel('B1')" id="btn-lvl-B1" class="level-btn flex-1 md:flex-none px-6 py-2.5 rounded-xl font-bold text-sm border-2 border-slate-200 text-slate-600 hover:border-amber-500 hover:text-amber-500 transition-all">B1 (Intermediat)</button>
+        <button onclick="setLevel('B2')" id="btn-lvl-B2" class="level-btn flex-1 md:flex-none px-6 py-2.5 rounded-xl font-bold text-sm border-2 border-slate-200 text-slate-600 hover:border-amber-500 hover:text-amber-500 transition-all">B2 (Mahir)</button>
+      </div>
+    </section>
+
+    <!-- MENU UTAMA -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      
+      <!-- KIRI: NAVIGASI AKTIVITAS BELAJAR & KOSAKATA -->
+      <div class="lg:col-span-1 space-y-6">
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+          <h3 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-indigo-500"></i> Aktivitas Belajar
+          </h3>
+          <div class="space-y-3">
+            <button onclick="switchTab('flashcard')" id="menu-flashcard" class="activity-menu-btn w-full text-left flex items-center justify-between p-3.5 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-700 font-semibold transition-all">
+              <span class="flex items-center gap-3">
+                <i class="fa-solid fa-clone text-lg"></i>
+                1. Flashcard Kosakata
+              </span>
+              <i class="fa-solid fa-chevron-right text-xs"></i>
+            </button>
+            <button onclick="switchTab('quiz')" id="menu-quiz" class="activity-menu-btn w-full text-left flex items-center justify-between p-3.5 rounded-xl text-slate-600 hover:bg-slate-50 border border-slate-100 transition-all">
+              <span class="flex items-center gap-3">
+                <i class="fa-solid fa-puzzle-piece text-lg"></i>
+                2. Kuis Susun Kalimat
+              </span>
+              <i class="fa-solid fa-chevron-right text-xs"></i>
+            </button>
+            <button onclick="switchTab('dictionary')" id="menu-dictionary" class="activity-menu-btn w-full text-left flex items-center justify-between p-3.5 rounded-xl text-slate-600 hover:bg-slate-50 border border-slate-100 transition-all">
+              <span class="flex items-center gap-3">
+                <i class="fa-solid fa-book-bookmark text-lg"></i>
+                3. Daftar Kosakata Saku
+              </span>
+              <i class="fa-solid fa-chevron-right text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- TIPS GRAMMATIK HARIAN -->
+        <div class="bg-gradient-to-br from-indigo-900 to-slate-900 text-white p-6 rounded-2xl shadow-lg relative overflow-hidden">
+          <div class="absolute -right-8 -bottom-8 w-24 h-24 bg-white/5 rounded-full"></div>
+          <h3 class="text-amber-400 text-xs font-bold uppercase tracking-wider mb-2">💡 Tips Grammatik Hari Ini</h3>
+          <h4 class="font-bold text-md mb-2" id="tips-title">Struktur Kalimat Utama (A1)</h4>
+          <p class="text-xs text-indigo-200 leading-relaxed mb-4" id="tips-desc">Kata kerja selalu berada pada posisi ke-2 dalam sebuah kalimat deklaratif normal Jerman. Subjek bisa berada sebelum kata kerja atau langsung setelahnya.</p>
+          <div class="bg-white/10 p-2.5 rounded-lg text-xs font-mono" id="tips-example">
+            Ich <span class="text-amber-300">lerne</span> Deutsch. (Benar)<br>
+            Deutsch <span class="text-amber-300">lerne</span> ich. (Benar)
+          </div>
+        </div>
+      </div>
+
+      <!-- KANAN: AREA INTERAKTIF / WORKSPACE -->
+      <div class="lg:col-span-2 space-y-6">
+        
+        <!-- ================= SECTION 1: FLASHCARD ================= -->
+        <div id="section-flashcard" class="activity-section space-y-6">
+          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center">
+            <h3 class="text-xl font-bold text-slate-800 mb-1">Flashcards Kosakata</h3>
+            <p class="text-sm text-slate-500 mb-6">Sentuh kartu untuk melihat artinya, lalu tandai jika Anda sudah mengingatnya!</p>
+
+            <!-- CONTAINER CARD -->
+            <div class="flex justify-center mb-8">
+              <div onclick="flipCard()" id="flashcard-container" class="flashcard w-80 h-96 cursor-pointer relative">
+                <div id="flashcard-inner" class="flashcard-inner w-full h-full relative duration-500">
+                  
+                  <!-- SISI DEPAN (BAHASA JERMAN) -->
+                  <div class="flashcard-front absolute w-full h-full bg-white rounded-2xl border-4 border-indigo-400 shadow-xl flex flex-col justify-between p-6">
+                    <div class="flex justify-between items-center">
+                      <span id="fc-badge-lvl" class="bg-indigo-100 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full">A1</span>
+                      <button onclick="speakGerman(event)" class="text-slate-400 hover:text-indigo-600 transition-colors p-2" title="Dengarkan Pengucapan">
+                        <i class="fa-solid fa-volume-high text-xl"></i>
+                      </button>
+                    </div>
+                    <div class="my-auto space-y-2">
+                      <p id="fc-artikel" class="text-indigo-500 font-bold tracking-widest text-sm uppercase">DER</p>
+                      <h4 id="fc-german" class="text-3xl font-bold text-slate-800">Hund</h4>
+                    </div>
+                    <p class="text-xs text-slate-400 italic">Klik kartu untuk membalik</p>
+                  </div>
+
+                  <!-- SISI BELAKANG (ARTI & CONTOH) -->
+                  <div class="flashcard-back absolute w-full h-full bg-indigo-600 rounded-2xl shadow-xl flex flex-col justify-between p-6 text-white">
+                    <span class="text-xs text-indigo-200 uppercase font-semibold text-left">Arti & Contoh Penggunaan</span>
+                    <div class="my-auto space-y-4 text-center">
+                      <h4 id="fc-indonesian" class="text-2xl font-bold">Anjing</h4>
+                      <div class="w-12 h-1 bg-white/20 mx-auto rounded-full"></div>
+                      <p id="fc-example" class="text-sm text-indigo-100 italic">"Ich habe einen Hund."</p>
+                    </div>
+                    <p class="text-xs text-indigo-300 italic">Klik kartu untuk membalik kembali</p>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <!-- TOMBOL KONTROL KARTU -->
+            <div class="flex justify-center gap-4">
+              <button onclick="cardDifficulty(false)" class="px-5 py-3 rounded-xl border border-red-200 text-red-600 font-bold text-sm hover:bg-red-50 transition-colors flex items-center gap-2">
+                <i class="fa-solid fa-circle-xmark"></i> Belum Hafal
+              </button>
+              <button onclick="cardDifficulty(true)" class="px-5 py-3 bg-emerald-600 text-white rounded-xl font-bold text-sm hover:bg-emerald-700 shadow-md shadow-emerald-100 transition-all flex items-center gap-2">
+                <i class="fa-solid fa-circle-check"></i> Sudah Hafal (+5 XP)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= SECTION 2: KUIS SUSUN KALIMAT ================= -->
+        <div id="section-quiz" class="activity-section hidden space-y-6">
+          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+            <div class="flex justify-between items-center mb-4">
+              <div>
+                <h3 class="text-xl font-bold text-slate-800">Kuis Susun Kalimat (Grammatik)</h3>
+                <p class="text-sm text-slate-500">Susun kata acak di bawah ini menjadi struktur tata bahasa Jerman yang tepat.</p>
+              </div>
+              <span id="quiz-badge-lvl" class="bg-amber-100 text-amber-700 text-xs font-bold px-3 py-1 rounded-full">A1 - Akkusativ</span>
+            </div>
+
+            <!-- BOARD KUIS -->
+            <div class="bg-slate-50 p-6 rounded-2xl border-2 border-dashed border-slate-200 min-h-[140px] flex flex-col justify-center items-center mb-6">
+              <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">Tantangan Kata Acak:</p>
+              <div id="quiz-scrambled-words" class="flex flex-wrap gap-2 justify-center">
+                <!-- Disisipkan via JS -->
+              </div>
+            </div>
+
+            <!-- AREA JAWABAN -->
+            <div class="space-y-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Jawaban Anda:</label>
+                <div id="quiz-working-area" class="w-full min-h-[60px] p-3 rounded-xl border border-slate-200 bg-white shadow-inner flex flex-wrap gap-2 items-center">
+                  <!-- Kata yang diklik pindah ke sini -->
+                  <p id="quiz-placeholder-text" class="text-slate-400 text-sm italic w-full text-center">Klik pada kata acak di atas untuk mulai menyusun...</p>
+                </div>
+              </div>
+
+              <!-- HINT & FEEDBACK -->
+              <div class="flex justify-between items-center text-sm">
+                <button onclick="toggleHint()" class="text-indigo-600 hover:text-indigo-700 font-semibold flex items-center gap-1">
+                  <i class="fa-regular fa-lightbulb"></i> Tampilkan Petunjuk
+                </button>
+                <button onclick="clearQuizAnswer()" class="text-red-500 hover:text-red-600 font-semibold flex items-center gap-1">
+                  <i class="fa-solid fa-arrow-rotate-left"></i> Bersihkan Jawaban
+                </button>
+              </div>
+
+              <div id="quiz-hint-box" class="hidden bg-amber-50 border border-amber-100 text-amber-800 text-sm p-4 rounded-xl">
+                <p class="font-semibold mb-1">💡 Petunjuk:</p>
+                <p id="quiz-hint-text">Posisi verb dalam kalimat ini harus berada di urutan...</p>
+              </div>
+
+              <div id="quiz-feedback-box" class="hidden p-4 rounded-xl text-center font-bold">
+                <!-- Dinamis via JS -->
+              </div>
+
+              <!-- TOMBOL PROSES -->
+              <div class="flex gap-3">
+                <button id="quiz-btn-submit" onclick="submitQuiz()" class="flex-1 py-3.5 bg-gradient-to-r from-amber-500 to-red-500 text-white rounded-xl font-bold shadow-md hover:from-amber-600 hover:to-red-600 transition-all flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-check"></i> Periksa Jawaban
+                </button>
+                <button id="quiz-btn-next" onclick="loadNextQuiz()" class="hidden flex-1 py-3.5 bg-indigo-600 text-white rounded-xl font-bold shadow-md hover:bg-indigo-700 transition-all flex items-center justify-center gap-2">
+                  Lanjut Kuis <i class="fa-solid fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================= SECTION 3: DAFTAR KOSAKATA SAKU ================= -->
+        <div id="section-dictionary" class="activity-section hidden space-y-6">
+          <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+              <div>
+                <h3 class="text-xl font-bold text-slate-800">Daftar Kosakata Saku</h3>
+                <p class="text-sm text-slate-500">Kumpulan kosakata yang wajib dihafal untuk target level Anda saat ini.</p>
+              </div>
+              <!-- Search Bar -->
+              <div class="relative w-full sm:w-64">
+                <input onkeyup="filterDictionary(this.value)" type="text" placeholder="Cari kosakata..." class="w-full pl-9 pr-4 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:border-indigo-500">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-sm"></i>
+              </div>
+            </div>
+
+            <!-- TABEL KOSAKATA -->
+            <div class="overflow-x-auto rounded-xl border border-slate-100">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-50 text-slate-500 text-xs font-bold uppercase border-b border-slate-100">
+                    <th class="py-3.5 px-4">Artikel / Kategori</th>
+                    <th class="py-3.5 px-4">Bahasa Jerman (Wort)</th>
+                    <th class="py-3.5 px-4">Bahasa Indonesia</th>
+                    <th class="py-3.5 px-4">Pelafalan</th>
+                  </tr>
+                </thead>
+                <tbody id="dictionary-tbody" class="divide-y divide-slate-100 text-sm text-slate-700">
+                  <!-- Disisipkan via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- MODAL SELAMAT/GAMIFIKASI (Kuis Selesai / Naik Level) -->
+  <div id="gamified-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white max-w-sm w-full rounded-2xl shadow-2xl p-6 text-center transform scale-95 transition-transform">
+      <div class="w-16 h-16 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl shadow-inner">
+        🔥
+      </div>
+      <h3 id="modal-title" class="text-xl font-bold text-slate-800 mb-2">Luar Biasa!</h3>
+      <p id="modal-desc" class="text-slate-600 text-sm mb-6">Jawaban Anda sempurna. Streak harian bertambah dan XP mengalir deras!</p>
+      <button onclick="closeModal()" class="w-full py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 transition-colors">
+        Lanjutkan Belajar!
+      </button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-400 mt-12">
+    <p>© 2026 DeutschLernen - Dibuat untuk Program Belajar Mandiri Interaktif A1 - B2.</p>
+  </footer>
+
+  <!-- SCRIPT UTAMA KONTROL SISTEM -->
+  <script>
+    // ================= STATE DAN DATABASE LOKAL (Kaya akan Konten A1-B2) =================
+    let userState = {
+      level: 'A1',
+      xp: 0,
+      streak: 0,
+      streakActive: false,
+      completedFlashcards: [],
+      completedQuizzes: []
+    };
+
+    // Bank Data Kosakata Komprehensif
+    const vocabularyDB = [
+      // Level A1
+      { id: 1, level: 'A1', german: 'Hund', article: 'der', indonesian: 'Anjing', example: 'Ich habe einen Hund.' },
+      { id: 2, level: 'A1', german: 'Katze', article: 'die', indonesian: 'Kucing', example: 'Die Katze schläft auf dem Sofa.' },
+      { id: 3, level: 'A1', german: 'Haus', article: 'das', indonesian: 'Rumah', example: 'Mein Haus ist klein, aber gemütlich.' },
+      { id: 4, level: 'A1', german: 'trinken', article: 'Verb', indonesian: 'Minum', example: 'Ich trinke sehr gerne Wasser.' },
+      { id: 5, level: 'A1', german: 'essen', article: 'Verb', indonesian: 'Makan', example: 'Wir essen heute Pizza.' },
+      { id: 6, level: 'A1', german: 'Familie', article: 'die', indonesian: 'Keluarga', example: 'Ich liebe meine Familie.' },
+      { id: 7, level: 'A1', german: 'Auto', article: 'das', indonesian: 'Mobil', example: 'Er hat ein neues Auto.' },
+      
+      // Level A2
+      { id: 101, level: 'A2', german: 'einladen', article: 'Verb (Trennbau)', indonesian: 'Mengundang', example: 'Ich lade dich zu meiner Geburtstagsparty ein.' },
+      { id: 102, level: 'A2', german: 'Arzt', article: 'der', indonesian: 'Dokter', example: 'Ich muss heute zum Arzt gehen.' },
+      { id: 103, level: 'A2', german: 'Geschenk', article: 'das', indonesian: 'Hadiah', example: 'Das ist ein schönes Geschenk für sie.' },
+      { id: 104, level: 'A2', german: 'reisen', article: 'Verb', indonesian: 'Bepergian / Traveling', example: 'Wir reisen im Sommer nach Deutschland.' },
+      { id: 105, level: 'A2', german: 'Bahnhof', article: 'der', indonesian: 'Stasiun Kereta', example: 'Wo ist der Bahnhof?' },
+      { id: 106, level: 'A2', german: 'Hausaufgabe', article: 'die', indonesian: 'Pekerjaan Rumah (PR)', example: 'Hast du deine Hausaufgabe gemacht?' },
+
+      // Level B1
+      { id: 201, level: 'B1', german: 'Entscheidung', article: 'die', indonesian: 'Keputusan', example: 'Ich habe eine wichtige Entscheidung getroffen.' },
+      { id: 202, level: 'B1', german: 'Umwelt', article: 'die', indonesian: 'Lingkungan', example: 'Wir müssen die Umwelt schützen.' },
+      { id: 203, level: 'B1', german: 'verantwortlich', article: 'Adjektiv', indonesian: 'Bertanggung jawab', example: 'Er ist für das Projekt verantwortlich.' },
+      { id: 204, level: 'B1', german: 'erfolgreich', article: 'Adjektiv', indonesian: 'Sukses / Berhasil', example: 'Sie ist eine sehr erfolgreiche Geschäftsfrau.' },
+      { id: 205, level: 'B1', german: 'beinflussen', article: 'Verb', indonesian: 'Mempengaruhi', example: 'Das Wetter beeinflusst meine Laune.' },
+      
+      // Level B2
+      { id: 301, level: 'B2', german: 'Herausforderung', article: 'die', indonesian: 'Tantangan', example: 'Das neue Projekt ist eine große Herausforderung.' },
+      { id: 302, level: 'B2', german: 'Voraussetzung', article: 'die', indonesian: 'Persyaratan / Kondisi awal', example: 'Gute Deutschkenntnisse sind eine Voraussetzung.' },
+      { id: 303, level: 'B2', german: 'nachhaltig', article: 'Adjektiv', indonesian: 'Berkelanjutan (Sustainable)', example: 'Wir brauchen nachhaltige Lösungen.' },
+      { id: 304, level: 'B2', german: 'überzeugen', article: 'Verb', indonesian: 'Meyakinkan', example: 'Ihr Argument hat mich völlig überzeugt.' },
+    ];
+
+    // Bank Kuis Susun Kalimat (Grammatik)
+    const grammarQuizDB = [
+      // Level A1
+      {
+        id: 1,
+        level: 'A1',
+        topic: 'Akkusativ (Objek)',
+        words: ['einen', 'Ich', 'Hund', 'habe'],
+        correct: 'Ich habe einen Hund.',
+        hint: 'Subjek (Ich) -> Kata kerja bantu posisi 2 (habe) -> Objek Akkusativ Maskulin (einen Hund).'
+      },
+      {
+        id: 2,
+        level: 'A1',
+        topic: 'Konjugasi Verb',
+        words: ['am', 'Wir', 'Fußball', 'spielen', 'Wochenende'],
+        correct: 'Wir spielen am Wochenende Fußball.',
+        hint: 'Kata kerja "spielen" disesuaikan dengan subjek "Wir" dan berada di posisi kedua.'
+      },
+
+      // Level A2
+      {
+        id: 101,
+        level: 'A2',
+        topic: 'Modalverben',
+        words: ['Deutsch', 'Ich', 'sprechen', 'kann', 'gut'],
+        correct: 'Ich kann gut Deutsch sprechen.',
+        hint: 'Modalverb (kann) di posisi ke-2, sedangkan kata kerja utama (sprechen) dikirim dalam bentuk dasar ke akhir kalimat.'
+      },
+      {
+        id: 102,
+        level: 'A2',
+        topic: 'Perfekt (Masa Lalu)',
+        words: ['gestern', 'Fußball', 'hat', 'Er', 'gespielt'],
+        correct: 'Er hat gestern Fußball gespielt.',
+        hint: 'Subjek + Kata Kerja Bantu (hat) di posisi 2 + Keterangan Waktu + Partizip II (gespielt) di posisi paling akhir.'
+      },
+
+      // Level B1
+      {
+        id: 201,
+        level: 'B1',
+        topic: 'Anak Kalimat (weil)',
+        words: ['ich', 'Deutsch', 'lerne', 'weil', 'mag', 'es', 'Ich'],
+        correct: 'Ich lerne Deutsch, weil ich es mag.',
+        hint: 'Konjungsi "weil" menuntut kata kerja terkonjugasi (mag) berada di akhir anak kalimat.'
+      },
+      {
+        id: 202,
+        level: 'B1',
+        topic: 'Anak Kalimat (dass)',
+        words: ['er', 'kommt', 'dass', 'hoffe', 'Ich', 'heute'],
+        correct: 'Ich hoffe, dass er heute kommt.',
+        hint: 'Setelah koma, gunakan konjungsi "dass" dan kirim kata kerja "kommt" ke posisi paling akhir.'
+      },
+
+      // Level B2
+      {
+        id: 301,
+        level: 'B2',
+        topic: 'Konjunktiv II (Pengandaian)',
+        words: ['ich', 'reich', 'wäre', 'Wenn', 'ein', 'Auto', 'würde', 'ich', 'kaufen'],
+        correct: 'Wenn ich reich wäre, würde ich ein Auto kaufen.',
+        hint: 'Gunakan struktur "Wenn ... [Verb Akhir], [Verb] ...". Kata kerja bantu Konjunktiv II adalah "wäre" dan "würde".'
+      }
+    ];
+
+    // Tips Belajar Harian sesuai Level
+    const tipsDB = {
+      A1: {
+        title: "Kunci Dasar Akkusativ (A1)",
+        desc: "Hanya artikel maskulin (der) yang berubah menjadi Akkusativ (den/einen). Artikel feminin (die/eine) dan netral (das/ein) tetap sama.",
+        example: "Ich habe den Hund. (der Hund -> den)\nIch habe die Katze. (die Katze -> die)"
+      },
+      A2: {
+        title: "Posisi Kata Kerja Pembantu Perfekt (A2)",
+        desc: "Untuk masa lalu (Perfekt), gunakan 'haben' atau 'sein' di posisi kedua, dan letakkan kata kerja aksi (Partizip II) di ujung kalimat.",
+        example: "Ich HABE gestern Deutsch GELESEN.\nWir SIND nach Berlin GEFAHREN."
+      },
+      B1: {
+        title: "Konjungsi Nebensatz (B1)",
+        desc: "Kata hubung seperti 'weil', 'dass', 'obwohl', dan 'wenn' mengirimkan seluruh kata kerja berkonjugasi ke ujung paling kanan kalimat.",
+        example: "Ich lerne, weil es Spaß MACHT.\nEr fragt, ob du Zeit HAST."
+      },
+      B2: {
+        title: "Struktur Pasif / Passiv (B2)",
+        desc: "Untuk mengekspresikan tindakan pasif, gunakan struktur kata kerja bantu 'werden' di posisi kedua dan Partizip II di akhir.",
+        example: "Das Haus WIRD bald GEBAUT.\nDie Fehler WERDEN sofort KORRIGIERT."
+      }
+    };
+
+    // State Internal Kuis & Flashcards
+    let currentFlashcards = [];
+    let currentFCIndex = 0;
+    let currentQuiz = null;
+    let selectedQuizWords = [];
+
+    // ================= SOUND & SPEECH SYSTEM (AI) =================
+    function speakGerman(event) {
+      if (event) event.stopPropagation(); // Mencegah kartu terbalik saat klik tombol suara
+      const textToSpeak = document.getElementById('fc-german').innerText;
+      if ('speechSynthesis' in window) {
+        // Hentikan suara yang sedang berjalan jika ada
+        window.speechSynthesis.cancel();
+        
+        const utterance = new SpeechSynthesisUtterance(textToSpeak);
+        utterance.lang = 'de-DE'; // Set Bahasa ke Jerman
+        
+        // Cari suara asli Jerman di browser jika tersedia
+        const voices = window.speechSynthesis.getVoices();
+        const deVoice = voices.find(voice => voice.lang.startsWith('de'));
+        if (deVoice) {
+          utterance.voice = deVoice;
+        }
+        
+        window.speechSynthesis.speak(utterance);
+      } else {
+        alert("Browser Anda belum mendukung text-to-speech bahasa Jerman.");
+      }
+    }
+
+    // ================= CORE APPS CONTROL =================
+    window.onload = function() {
+      // Inisialisasi awal
+      loadState();
+      setLevel(userState.level);
+      switchTab('flashcard');
+    };
+
+    function loadState() {
+      const saved = localStorage.getItem('deutsch_lernen_state');
+      if (saved) {
+        userState = JSON.parse(saved);
+        document.getElementById('xp-display').innerText = `${userState.xp} XP`;
+        document.getElementById('streak-display').innerText = `${userState.streak} Hari`;
+        document.getElementById('user-level-badge').innerText = userState.level;
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem('deutsch_lernen_state', JSON.stringify(userState));
+      document.getElementById('xp-display').innerText = `${userState.xp} XP`;
+      document.getElementById('streak-display').innerText = `${userState.streak} Hari`;
+      document.getElementById('user-level-badge').innerText = userState.level;
+    }
+
+    function setLevel(lvl) {
+      userState.level = lvl;
+      saveState();
+
+      // Perbarui style tombol
+      document.querySelectorAll('.level-btn').forEach(btn => {
+        btn.className = "level-btn flex-1 md:flex-none px-6 py-2.5 rounded-xl font-bold text-sm border-2 border-slate-200 text-slate-600 hover:border-amber-500 hover:text-amber-500 transition-all";
+      });
+      const activeBtn = document.getElementById(`btn-lvl-${lvl}`);
+      if (activeBtn) {
+        activeBtn.className = "level-btn flex-1 md:flex-none px-6 py-2.5 rounded-xl font-bold text-sm border-2 border-amber-500 bg-amber-500 text-white shadow-md shadow-amber-200 transition-all";
+      }
+
+      // Perbarui Tips Harian
+      const tip = tipsDB[lvl] || tipsDB['A1'];
+      document.getElementById('tips-title').innerText = tip.title;
+      document.getElementById('tips-desc').innerText = tip.desc;
+      document.getElementById('tips-example').innerHTML = tip.example.replace(/\n/g, '<br>');
+
+      // Refresh Data Aktivitas
+      initFlashcards();
+      initQuiz();
+      initDictionary();
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.activity-section').forEach(sec => sec.classList.add('hidden'));
+      document.getElementById(`section-${tabId}`).classList.remove('hidden');
+
+      document.querySelectorAll('.activity-menu-btn').forEach(btn => {
+        btn.className = "activity-menu-btn w-full text-left flex items-center justify-between p-3.5 rounded-xl text-slate-600 hover:bg-slate-50 border border-slate-100 transition-all";
+      });
+      document.getElementById(`menu-${tabId}`).className = "activity-menu-btn w-full text-left flex items-center justify-between p-3.5 rounded-xl bg-indigo-50 border border-indigo-100 text-indigo-700 font-semibold transition-all";
+    }
+
+    // ================= TAB 1: FLASHCARD CONTROLLER =================
+    function initFlashcards() {
+      // Ambil kartu berdasarkan level terpilih
+      currentFlashcards = vocabularyDB.filter(v => v.level === userState.level);
+      currentFCIndex = 0;
+      
+      // Reset card flip
+      const fcContainer = document.getElementById('flashcard-container');
+      fcContainer.classList.remove('flipped');
+
+      showFlashcard();
+    }
+
+    function showFlashcard() {
+      if (currentFlashcards.length === 0) {
+        document.getElementById('fc-german').innerText = "Belum Ada Data";
+        document.getElementById('fc-indonesian').innerText = "Silakan tambah kosakata";
+        return;
+      }
+
+      const card = currentFlashcards[currentFCIndex];
+      document.getElementById('fc-badge-lvl').innerText = card.level;
+      document.getElementById('fc-artikel').innerText = card.article;
+      document.getElementById('fc-german').innerText = card.german;
+      document.getElementById('fc-indonesian').innerText = card.indonesian;
+      document.getElementById('fc-example').innerText = `"${card.example}"`;
+    }
+
+    function flipCard() {
+      const fc = document.getElementById('flashcard-container');
+      fc.classList.toggle('flipped');
+    }
+
+    function cardDifficulty(isKnown) {
+      if (isKnown) {
+        addXP(5);
+        showModal("Luar Biasa!", "Selamat! Anda berhasil mengingat kata ini dengan baik. Terus pertahankan semangat belajarnya! 🔥");
+      }
+
+      // Roll ke kartu berikutnya secara otomatis setelah animasi tutup flip
+      const fcContainer = document.getElementById('flashcard-container');
+      fcContainer.classList.remove('flipped');
+      
+      setTimeout(() => {
+        currentFCIndex = (currentFCIndex + 1) % currentFlashcards.length;
+        showFlashcard();
+      }, 300);
+    }
+
+    // ================= TAB 2: KUIS SUSUN KALIMAT CONTROLLER =================
+    function initQuiz() {
+      const activeQuizzes = grammarQuizDB.filter(q => q.level === userState.level);
+      if (activeQuizzes.length === 0) {
+        document.getElementById('quiz-scrambled-words').innerHTML = "<p class='text-slate-500 text-sm'>Belum ada latihan kuis untuk level ini.</p>";
+        return;
+      }
+
+      // Ambil kuis acak dari daftar yang sesuai
+      currentQuiz = activeQuizzes[Math.floor(Math.random() * activeQuizzes.length)];
+      selectedQuizWords = [];
+      
+      document.getElementById('quiz-badge-lvl').innerText = `${currentQuiz.level} - ${currentQuiz.topic}`;
+      document.getElementById('quiz-hint-text').innerText = currentQuiz.hint;
+      document.getElementById('quiz-hint-box').classList.add('hidden');
+      document.getElementById('quiz-feedback-box').classList.add('hidden');
+      
+      document.getElementById('quiz-btn-submit').classList.remove('hidden');
+      document.getElementById('quiz-btn-next').classList.add('hidden');
+
+      renderScrambledWords();
+      renderWorkingArea();
+    }
+
+    function renderScrambledWords() {
+      const container = document.getElementById('quiz-scrambled-words');
+      container.innerHTML = '';
+      
+      currentQuiz.words.forEach((word, index) => {
+        // Cek apakah kata sudah dipilih atau belum
+        if (!selectedQuizWords.includes(index)) {
+          const btn = document.createElement('button');
+          btn.innerText = word;
+          btn.className = "px-4 py-2 bg-white hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 text-slate-700 font-medium rounded-xl shadow-sm hover:shadow active:scale-95 transition-all text-sm";
+          btn.onclick = () => selectWord(word, index);
+          container.appendChild(btn);
+        }
+      });
+    }
+
+    function renderWorkingArea() {
+      const area = document.getElementById('quiz-working-area');
+      const placeholder = document.getElementById('quiz-placeholder-text');
+
+      // Hapus tombol-tombol kata sebelumnya
+      const wordBtns = area.querySelectorAll('.working-word-btn');
+      wordBtns.forEach(btn => btn.remove());
+
+      if (selectedQuizWords.length === 0) {
+        placeholder.classList.remove('hidden');
+      } else {
+        placeholder.classList.add('hidden');
+        selectedQuizWords.forEach((wordObj) => {
+          const btn = document.createElement('button');
+          btn.innerText = wordObj.word;
+          btn.className = "working-word-btn px-4 py-2 bg-indigo-600 text-white font-medium rounded-xl shadow-md active:scale-95 transition-all text-sm flex items-center gap-2";
+          btn.onclick = () => deselectWord(wordObj.index);
+          
+          // Tambahkan icon silang kecil
+          btn.innerHTML += `<i class="fa-solid fa-xmark text-[10px] opacity-75"></i>`;
+          
+          area.appendChild(btn);
+        });
+      }
+    }
+
+    function selectWord(word, index) {
+      selectedQuizWords.push({ word, index });
+      renderScrambledWords();
+      renderWorkingArea();
+    }
+
+    function deselectWord(originalIndex) {
+      selectedQuizWords = selectedQuizWords.filter(item => item.index !== originalIndex);
+      renderScrambledWords();
+      renderWorkingArea();
+    }
+
+    function clearQuizAnswer() {
+      selectedQuizWords = [];
+      renderScrambledWords();
+      renderWorkingArea();
+    }
+
+    function toggleHint() {
+      const hintBox = document.getElementById('quiz-hint-box');
+      hintBox.classList.toggle('hidden');
+    }
+
+    function submitQuiz() {
+      if (selectedQuizWords.length === 0) {
+        showFeedback("Silakan susun kalimat terlebih dahulu sebelum memeriksa jawaban!", false);
+        return;
+      }
+
+      // Gabungkan susunan kata user
+      const userAnswer = selectedQuizWords.map(obj => obj.word).join(' ').trim();
+      const correctAnswer = currentQuiz.correct.trim();
+
+      // Pengecekan standard (mengabaikan spasi berlebih & tanda baca akhir opsional)
+      const cleanUser = userAnswer.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase();
+      const cleanCorrect = correctAnswer.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase();
+
+      if (cleanUser === cleanCorrect) {
+        showFeedback(`🎉 Richtig! (Benar!)\nJawaban yang tepat: "${correctAnswer}"`, true);
+        addXP(15);
+        triggerStreak();
+        
+        document.getElementById('quiz-btn-submit').classList.add('hidden');
+        document.getElementById('quiz-btn-next').classList.remove('hidden');
+      } else {
+        showFeedback(`❌ Falsch! (Salah!)\nCoba periksa kembali struktur kata atau gunakan petunjuk di bawah.`, false);
+      }
+    }
+
+    function showFeedback(msg, isSuccess) {
+      const feedbackBox = document.getElementById('quiz-feedback-box');
+      feedbackBox.classList.remove('hidden', 'bg-emerald-50', 'text-emerald-800', 'bg-red-50', 'text-red-800');
+      
+      if (isSuccess) {
+        feedbackBox.classList.add('bg-emerald-50', 'text-emerald-800');
+      } else {
+        feedbackBox.classList.add('bg-red-50', 'text-red-800');
+      }
+      
+      feedbackBox.innerHTML = msg.replace(/\n/g, '<br>');
+    }
+
+    function loadNextQuiz() {
+      initQuiz();
+    }
+
+    // ================= TAB 3: DAFTAR KOSAKATA SAKU =================
+    function initDictionary() {
+      const currentList = vocabularyDB.filter(v => v.level === userState.level);
+      renderDictionaryTable(currentList);
+    }
+
+    function renderDictionaryTable(list) {
+      const tbody = document.getElementById('dictionary-tbody');
+      tbody.innerHTML = '';
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="py-6 text-center text-slate-400 italic">Belum ada daftar kata yang cocok.</td></tr>`;
+        return;
+      }
+
+      list.forEach(v => {
+        let badgeStyle = "bg-slate-100 text-slate-600";
+        if (v.article === 'der') badgeStyle = "bg-blue-100 text-blue-700 font-bold";
+        if (v.article === 'die') badgeStyle = "bg-rose-100 text-rose-700 font-bold";
+        if (v.article === 'das') badgeStyle = "bg-amber-100 text-amber-700 font-bold";
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50/80 transition-colors";
+        tr.innerHTML = `
+          <td class="py-4 px-4 font-semibold">
+            <span class="${badgeStyle} text-xs px-2.5 py-1 rounded-md uppercase tracking-wider">${v.article}</span>
+          </td>
+          <td class="py-4 px-4 font-bold text-slate-800">${v.german}</td>
+          <td class="py-4 px-4 text-slate-500">${v.indonesian}</td>
+          <td class="py-4 px-4">
+            <button onclick="speakSelectedGerman('${v.german}')" class="text-indigo-600 hover:text-indigo-800 transition-colors" title="Dengarkan Pengucapan">
+              <i class="fa-solid fa-volume-high"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function speakSelectedGerman(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'de-DE';
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    function filterDictionary(query) {
+      const cleanQuery = query.toLowerCase();
+      const currentList = vocabularyDB.filter(v => v.level === userState.level);
+      const filtered = currentList.filter(v => 
+        v.german.toLowerCase().includes(cleanQuery) || 
+        v.indonesian.toLowerCase().includes(cleanQuery) ||
+        v.article.toLowerCase().includes(cleanQuery)
+      );
+      renderDictionaryTable(filtered);
+    }
+
+    // ================= GAMIFICATION / REWARDS UTILS =================
+    function addXP(amount) {
+      userState.xp += amount;
+      saveState();
+    }
+
+    function triggerStreak() {
+      if (!userState.streakActive) {
+        userState.streak += 1;
+        userState.streakActive = true;
+        saveState();
+      }
+    }
+
+    function showModal(title, desc) {
+      document.getElementById('modal-title').innerText = title;
+      document.getElementById('modal-desc').innerText = desc;
+      const modal = document.getElementById('gamified-modal');
+      modal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('gamified-modal');
+      modal.classList.add('hidden');
+    }
+  </script>
+</body>
+</html>
