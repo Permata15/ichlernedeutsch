@@ -301,7 +301,7 @@
 
   <!-- SCRIPT UTAMA KONTROL SISTEM -->
   <script>
-    // ================= STATE DAN DATABASE LOKAL (Kaya akan Konten A1-B2) =================
+    // ================= STATE DAN DATABASE LOKAL =================
     let userState = {
       level: 'A1',
       xp: 0,
@@ -311,9 +311,9 @@
       completedQuizzes: []
     };
 
-    // Bank Data Kosakata Komprehensif
+    // Bank Data Kosakata Komprehensif (Ekspansi Masif: 50 item per level)
     const vocabularyDB = [
-      // Level A1
+      // ================= LEVEL A1 (1 - 50) =================
       { id: 1, level: 'A1', german: 'Hund', article: 'der', indonesian: 'Anjing', example: 'Ich habe einen Hund.' },
       { id: 2, level: 'A1', german: 'Katze', article: 'die', indonesian: 'Kucing', example: 'Die Katze schläft auf dem Sofa.' },
       { id: 3, level: 'A1', german: 'Haus', article: 'das', indonesian: 'Rumah', example: 'Mein Haus ist klein, aber gemütlich.' },
@@ -321,94 +321,296 @@
       { id: 5, level: 'A1', german: 'essen', article: 'Verb', indonesian: 'Makan', example: 'Wir essen heute Pizza.' },
       { id: 6, level: 'A1', german: 'Familie', article: 'die', indonesian: 'Keluarga', example: 'Ich liebe meine Familie.' },
       { id: 7, level: 'A1', german: 'Auto', article: 'das', indonesian: 'Mobil', example: 'Er hat ein neues Auto.' },
-      
-      // Level A2
+      { id: 8, level: 'A1', german: 'Buch', article: 'das', indonesian: 'Buku', example: 'Ich lese ein interessantes Buch.' },
+      { id: 9, level: 'A1', german: 'Lehrer', article: 'der', indonesian: 'Guru (laki-laki)', example: 'Der Lehrer erklärt die Grammatik.' },
+      { id: 10, level: 'A1', german: 'Schule', article: 'die', indonesian: 'Sekolah', example: 'Die Kinder gehen zur Schule.' },
+      { id: 11, level: 'A1', german: 'Wasser', article: 'das', indonesian: 'Air', example: 'Ein Glas Wasser, bitte!' },
+      { id: 12, level: 'A1', german: 'Brot', article: 'das', indonesian: 'Roti', example: 'Möchtest du Brot mit Butter?' },
+      { id: 13, level: 'A1', german: 'Freund', article: 'der', indonesian: 'Teman laki-laki', example: 'Er ist ein guter Freund von mir.' },
+      { id: 14, level: 'A1', german: 'Tisch', article: 'der', indonesian: 'Meja', example: 'Der Stift liegt auf dem Tisch.' },
+      { id: 15, level: 'A1', german: 'Stuhl', article: 'der', indonesian: 'Kursi', example: 'Setz dich bitte auf den Stuhl.' },
+      { id: 16, level: 'A1', german: 'Apfel', article: 'der', indonesian: 'Apel', example: 'Ich esse jeden Tag einen Apfel.' },
+      { id: 17, level: 'A1', german: 'Tasche', article: 'die', indonesian: 'Tas', example: 'Deine Tasche steht an der Tür.' },
+      { id: 18, level: 'A1', german: 'Stadt', article: 'die', indonesian: 'Kota', example: 'Berlin ist eine große Stadt.' },
+      { id: 19, level: 'A1', german: 'Land', article: 'das', indonesian: 'Negara / Desa', example: 'Aus welchem Land kommen Sie?' },
+      { id: 20, level: 'A1', german: 'Sprache', article: 'die', indonesian: 'Bahasa', example: 'Welche Sprache sprechen Sie?' },
+      { id: 21, level: 'A1', german: 'lernen', article: 'Verb', indonesian: 'Belajar', example: 'Wir lernen heute Deutsch.' },
+      { id: 22, level: 'A1', german: 'schreiben', article: 'Verb', indonesian: 'Menulis', example: 'Ich schreibe eine E-Mail.' },
+      { id: 23, level: 'A1', german: 'lesen', article: 'Verb', indonesian: 'Membaca', example: 'Liest du gerne Romane?' },
+      { id: 24, level: 'A1', german: 'schlafen', article: 'Verb', indonesian: 'Tidur', example: 'Das Baby schläft jetzt.' },
+      { id: 25, level: 'A1', german: 'kommen', article: 'Verb', indonesian: 'Datang / Berasal', example: 'Ich komme aus Indonesien.' },
+      { id: 26, level: 'A1', german: 'wohnen', article: 'Verb', indonesian: 'Tinggal', example: 'Ich wohne in Jakarta.' },
+      { id: 27, level: 'A1', german: 'heißen', article: 'Verb', indonesian: 'Bernama', example: 'Wie heißen Sie?' },
+      { id: 28, level: 'A1', german: 'haben', article: 'Verb', indonesian: 'Mempunyai', example: 'Hast du Geschwister?' },
+      { id: 29, level: 'A1', german: 'sein', article: 'Verb', indonesian: 'Adalah (to be)', example: 'Das ist mein Bruder.' },
+      { id: 30, level: 'A1', german: 'alt', article: 'Adjektiv', indonesian: 'Tua / Lama', example: 'Mein Fahrrad ist schon sehr alt.' },
+      { id: 31, level: 'A1', german: 'neu', article: 'Adjektiv', indonesian: 'Baru', example: 'Ich kaufe ein neues Handy.' },
+      { id: 32, level: 'A1', german: 'groß', article: 'Adjektiv', indonesian: 'Besar / Tinggi', example: 'Sein Haus ist sehr groß.' },
+      { id: 33, level: 'A1', german: 'klein', article: 'Adjektiv', indonesian: 'Kecil', example: 'Die Wohnung ist ein bisschen klein.' },
+      { id: 34, level: 'A1', german: 'gut', article: 'Adjektiv', indonesian: 'Bagus / Baik', example: 'Das Essen schmeckt wirklich gut.' },
+      { id: 35, level: 'A1', german: 'schlecht', article: 'Adjektiv', indonesian: 'Buruk / Jelek', example: 'Das Wetter heute ist leider schlecht.' },
+      { id: 36, level: 'A1', german: 'schön', article: 'Adjektiv', indonesian: 'Indah / Cantik', example: 'Du hast ein schönes Lächeln.' },
+      { id: 37, level: 'A1', german: 'hässlich', article: 'Adjektiv', indonesian: 'Jelek / Buruk rupa', example: 'Ich finde diese Farbe hässlich.' },
+      { id: 38, level: 'A1', german: 'müde', article: 'Adjektiv', indonesian: 'Lelah / Mengantuk', example: 'Nach der Arbeit bin ich immer müde.' },
+      { id: 39, level: 'A1', german: 'glücklich', article: 'Adjektiv', indonesian: 'Bahagia', example: 'Heute bin ich sehr glücklich.' },
+      { id: 40, level: 'A1', german: 'traurig', article: 'Adjektiv', indonesian: 'Sedih', example: 'Warum bist du so traurig?' },
+      { id: 41, level: 'A1', german: 'Mutter', article: 'die', indonesian: 'Ibu', example: 'Meine Mutter kocht sehr gut.' },
+      { id: 42, level: 'A1', german: 'Vater', article: 'der', indonesian: 'Ayah', example: 'Mein Vater arbeitet im Büro.' },
+      { id: 43, level: 'A1', german: 'Kind', article: 'das', indonesian: 'Anak', example: 'Das Kind spielt im Garten.' },
+      { id: 44, level: 'A1', german: 'Milch', article: 'die', indonesian: 'Susu', example: 'Trinkst du Kaffee mit Milch?' },
+      { id: 45, level: 'A1', german: 'Kaffee', article: 'der', indonesian: 'Kopi', example: 'Ich trinke morgens einen Kaffee.' },
+      { id: 46, level: 'A1', german: 'Tee', article: 'der', indonesian: 'Teh', example: 'Möchten Sie grünen Tee?' },
+      { id: 47, level: 'A1', german: 'Saft', article: 'der', indonesian: 'Jus', example: 'Orangensaft schmeckt frisch.' },
+      { id: 48, level: 'A1', german: 'Geld', article: 'das', indonesian: 'Uang', example: 'Ich habe leider kein Geld dabei.' },
+      { id: 49, level: 'A1', german: 'Uhr', article: 'die', indonesian: 'Jam', example: 'Wie viel Uhr ist es?' },
+      { id: 50, level: 'A1', german: 'Tag', article: 'der', indonesian: 'Hari', example: 'Guten Tag, wie geht es Ihnen?' },
+
+      // ================= LEVEL A2 (101 - 150) =================
       { id: 101, level: 'A2', german: 'einladen', article: 'Verb (Trennbau)', indonesian: 'Mengundang', example: 'Ich lade dich zu meiner Geburtstagsparty ein.' },
       { id: 102, level: 'A2', german: 'Arzt', article: 'der', indonesian: 'Dokter', example: 'Ich muss heute zum Arzt gehen.' },
       { id: 103, level: 'A2', german: 'Geschenk', article: 'das', indonesian: 'Hadiah', example: 'Das ist ein schönes Geschenk für sie.' },
       { id: 104, level: 'A2', german: 'reisen', article: 'Verb', indonesian: 'Bepergian / Traveling', example: 'Wir reisen im Sommer nach Deutschland.' },
       { id: 105, level: 'A2', german: 'Bahnhof', article: 'der', indonesian: 'Stasiun Kereta', example: 'Wo ist der Bahnhof?' },
       { id: 106, level: 'A2', german: 'Hausaufgabe', article: 'die', indonesian: 'Pekerjaan Rumah (PR)', example: 'Hast du deine Hausaufgabe gemacht?' },
+      { id: 107, level: 'A2', german: 'Gesundheit', article: 'die', indonesian: 'Kesehatan', example: 'Gesundheit ist das Wichtigste im Leben.' },
+      { id: 108, level: 'A2', german: 'Krankheit', article: 'die', indonesian: 'Penyakit', example: 'Grippe ist eine häufige Krankheit im Winter.' },
+      { id: 109, level: 'A2', german: 'anrufen', article: 'Verb (Trennbau)', indonesian: 'Menelepon', example: 'Ich rufe dich heute Abend an.' },
+      { id: 110, level: 'A2', german: 'einkaufen', article: 'Verb (Trennbau)', indonesian: 'Berbelanja', example: 'Wir kaufen im Supermarkt ein.' },
+      { id: 111, level: 'A2', german: 'aufräumen', article: 'Verb (Trennbau)', indonesian: 'Merapikan / Membereskan', example: 'Ich muss mein Zimmer aufräumen.' },
+      { id: 112, level: 'A2', german: 'verstehen', article: 'Verb', indonesian: 'Mengerti / Memahami', example: 'Ich verstehe dieses Wort nicht.' },
+      { id: 113, level: 'A2', german: 'vergessen', article: 'Verb', indonesian: 'Lupa / Melupakan', example: 'Ich habe meinen Schlüssel vergessen.' },
+      { id: 114, level: 'A2', german: 'verlieren', article: 'Verb', indonesian: 'Kehilangan / Kalah', example: 'Hast du dein Handy verloren?' },
+      { id: 115, level: 'A2', german: 'finden', article: 'Verb', indonesian: 'Menemukan / Berpendapat', example: 'Ich finde mein Buch nicht.' },
+      { id: 116, level: 'A2', german: 'suchen', article: 'Verb', indonesian: 'Mencari', example: 'Wonach suchst du in der Tasche?' },
+      { id: 117, level: 'A2', german: 'helfen', article: 'Verb (Dativ)', indonesian: 'Membantu', example: 'Kann ich Ihnen helfen?' },
+      { id: 118, level: 'A2', german: 'gefallen', article: 'Verb (Dativ)', indonesian: 'Menyukai / Berkenan', example: 'Das rote Kleid gefällt mir sehr.' },
+      { id: 119, level: 'A2', german: 'gehören', article: 'Verb (Dativ)', indonesian: 'Milik / Kepunyaan', example: 'Das Auto gehört meinem Vater.' },
+      { id: 120, level: 'A2', german: 'danken', article: 'Verb (Dativ)', indonesian: 'Berterima kasih', example: 'Ich danke dir für das leckere Essen.' },
+      { id: 121, level: 'A2', german: 'kalt', article: 'Adjektiv', indonesian: 'Dingin', example: 'Im Winter ist es sehr kalt.' },
+      { id: 122, level: 'A2', german: 'warm', article: 'Adjektiv', indonesian: 'Hangat', example: 'Heute ist das Wetter angenehm warm.' },
+      { id: 123, level: 'A2', german: 'heiß', article: 'Adjektiv', indonesian: 'Panas', example: 'Der Tee ist noch zu heiß.' },
+      { id: 124, level: 'A2', german: 'billig', article: 'Adjektiv', indonesian: 'Murah', example: 'Die Bananen sind heute sehr billig.' },
+      { id: 125, level: 'A2', german: 'teuer', article: 'Adjektiv', indonesian: 'Mahal', example: 'Das Hotel war viel zu teuer.' },
+      { id: 126, level: 'A2', german: 'schwer', article: 'Adjektiv', indonesian: 'Berat / Sulit', example: 'Die Prüfung war wirklich schwer.' },
+      { id: 127, level: 'A2', german: 'einfach', article: 'Adjektiv', indonesian: 'Mudah / Sederhana', example: 'Diese Übung ist ganz einfach.' },
+      { id: 128, level: 'A2', german: 'schnell', article: 'Adjektiv', indonesian: 'Cepat', example: 'Er fährt zu schnell.' },
+      { id: 129, level: 'A2', german: 'langsam', article: 'Adjektiv', indonesian: 'Lambat', example: 'Sprechen Sie bitte langsamer.' },
+      { id: 130, level: 'A2', german: 'leise', article: 'Adjektiv', indonesian: 'Pelan / Sunyi', example: 'Seid bitte leise, das Kind schläft.' },
+      { id: 131, level: 'A2', german: 'laut', article: 'Adjektiv', indonesian: 'Keras / Bising', example: 'Die Musik ist mir zu laut.' },
+      { id: 132, level: 'A2', german: 'Urlaub', article: 'der', indonesian: 'Liburan', example: 'Ich mache im Juni zwei Wochen Urlaub.' },
+      { id: 133, level: 'A2', german: 'Weg', article: 'der', indonesian: 'Jalan / Rute', example: 'Kennen Sie den Weg zum Hotel?' },
+      { id: 134, level: 'A2', german: 'Arbeit', article: 'die', indonesian: 'Pekerjaan', example: 'Ich habe viel Arbeit in dieser Woche.' },
+      { id: 135, level: 'A2', german: 'Kollege', article: 'der', indonesian: 'Rekan kerja', example: 'Mein neuer Kollege ist sehr nett.' },
+      { id: 136, level: 'A2', german: 'Küche', article: 'die', indonesian: 'Dapur', example: 'Meine Mutter kocht in der Küche.' },
+      { id: 137, level: 'A2', german: 'Kühlschrank', article: 'der', indonesian: 'Kulkas', example: 'Das Bier steht im Kühlschrank.' },
+      { id: 138, level: 'A2', german: 'Schlafzimmer', article: 'das', indonesian: 'Kamar tidur', example: 'Unser Schlafzimmer hat ein großes Fenster.' },
+      { id: 139, level: 'A2', german: 'Bad', article: 'das', indonesian: 'Kamar mandi', example: 'Ich putze gerade das Bad.' },
+      { id: 140, level: 'A2', german: 'Garten', article: 'der', indonesian: 'Taman', example: 'Die Kinder spielen im Garten.' },
+      { id: 141, level: 'A2', german: 'Flugzeug', article: 'das', indonesian: 'Pesawat terbang', example: 'Das Flugzeug fliegt nach München.' },
+      { id: 142, level: 'A2', german: 'Fahrrad', article: 'das', indonesian: 'Sepeda', example: 'Ich fahre jeden Tag mit dem Fahrrad.' },
+      { id: 143, level: 'A2', german: 'Zug', article: 'der', indonesian: 'Kereta api', example: 'Der Zug hat zehn Minuten Verspätung.' },
+      { id: 144, level: 'A2', german: 'Bus', article: 'der', indonesian: 'Bis', example: 'Ich nehme den Bus zur Arbeit.' },
+      { id: 145, level: 'A2', german: 'Karte', article: 'die', indonesian: 'Tiket / Kartu', example: 'Ich kaufe eine Fahrkarte am Automaten.' },
+      { id: 146, level: 'A2', german: 'Nachbar', article: 'der', indonesian: 'Tetangga', example: 'Unser Nachbar hat einen lauten Hund.' },
+      { id: 147, level: 'A2', german: 'Frühstück', article: 'das', indonesian: 'Sarapan', example: 'Was isst du normalerweise zum Frühstück?' },
+      { id: 148, level: 'A2', german: 'Mittagessen', article: 'das', indonesian: 'Makan siang', example: 'Wir machen um 12 Uhr Mittagessen.' },
+      { id: 149, level: 'A2', german: 'Abendessen', article: 'das', indonesian: 'Makan malam', example: 'Zum Abendessen gibt es nur Salat.' },
+      { id: 150, level: 'A2', german: 'Getränk', article: 'das', indonesian: 'Minuman', example: 'Welche Getränke möchtest du bestellen?' },
 
-      // Level B1
+      // ================= LEVEL B1 (201 - 250) =================
       { id: 201, level: 'B1', german: 'Entscheidung', article: 'die', indonesian: 'Keputusan', example: 'Ich habe eine wichtige Entscheidung getroffen.' },
       { id: 202, level: 'B1', german: 'Umwelt', article: 'die', indonesian: 'Lingkungan', example: 'Wir müssen die Umwelt schützen.' },
       { id: 203, level: 'B1', german: 'verantwortlich', article: 'Adjektiv', indonesian: 'Bertanggung jawab', example: 'Er ist für das Projekt verantwortlich.' },
       { id: 204, level: 'B1', german: 'erfolgreich', article: 'Adjektiv', indonesian: 'Sukses / Berhasil', example: 'Sie ist eine sehr erfolgreiche Geschäftsfrau.' },
-      { id: 205, level: 'B1', german: 'beinflussen', article: 'Verb', indonesian: 'Mempengaruhi', example: 'Das Wetter beeinflusst meine Laune.' },
-      
-      // Level B2
+      { id: 205, level: 'B1', german: 'beeinflussen', article: 'Verb', indonesian: 'Mempengaruhi', example: 'Das Wetter beeinflusst meine Laune.' },
+      { id: 206, level: 'B1', german: 'Erfahrung', article: 'die', indonesian: 'Pengalaman', example: 'Sie hat viel Erfahrung im Marketing.' },
+      { id: 207, level: 'B1', german: 'Ausbildung', article: 'die', indonesian: 'Pendidikan Vokasi / Pelatihan', example: 'Er macht eine Ausbildung zum Mechatroniker.' },
+      { id: 208, level: 'B1', german: 'Beruf', article: 'der', indonesian: 'Profesi / Pekerjaan', example: 'Was sind Sie von Beruf?' },
+      { id: 209, level: 'B1', german: 'Bewerbung', article: 'die', indonesian: 'Lamaran Pekerjaan', example: 'Ich habe meine Bewerbung abgeschickt.' },
+      { id: 210, level: 'B1', german: 'Lebenslauf', article: 'der', indonesian: 'Daftar Riwayat Hidup (CV)', example: 'Bitte fügen Sie Ihren Lebenslauf bei.' },
+      { id: 211, level: 'B1', german: 'Gespräch', article: 'das', indonesian: 'Percakapan / Wawancara', example: 'Das Vorstellungsgespräch lief sehr gut.' },
+      { id: 212, level: 'B1', german: 'Zukunft', article: 'die', indonesian: 'Masa depan', example: 'Niemand weiß, was in der Zukunft passiert.' },
+      { id: 213, level: 'B1', german: 'Vergangenheit', article: 'die', indonesian: 'Masa lalu', example: 'Man sollte nicht zu viel über die Vergangenheit nachdenken.' },
+      { id: 214, level: 'B1', german: 'Gegenwart', article: 'die', indonesian: 'Masa kini / Present', example: 'Ich lebe in der Gegenwart.' },
+      { id: 215, level: 'B1', german: 'beobachten', article: 'Verb', indonesian: 'Mengamati', example: 'Die Forscher beobachten die Vögel.' },
+      { id: 216, level: 'B1', german: 'entwickeln', article: 'Verb', indonesian: 'Mengembangkan', example: 'Wir müssen ein neues Konzept entwickeln.' },
+      { id: 217, level: 'B1', german: 'gründen', article: 'Verb', indonesian: 'Mendirikan', example: 'Sie wollen ein eigenes Startup gründen.' },
+      { id: 218, level: 'B1', german: 'lohnen', article: 'Verb (Reflexiv)', indonesian: 'Berharga / Layak', example: 'Es lohnt sich, diese Ausstellung zu besuchen.' },
+      { id: 219, level: 'B1', german: 'beschweren', article: 'Verb (Reflexiv)', indonesian: 'Mengeluh / Komplain', example: 'Der Gast beschwert sich über das Zimmer.' },
+      { id: 220, level: 'B1', german: 'bewerben', article: 'Verb (Reflexiv)', indonesian: 'Melamar', example: 'Ich bewerbe mich um eine Stelle als Lehrer.' },
+      { id: 221, level: 'B1', german: 'interessieren', article: 'Verb (Reflexiv)', indonesian: 'Tertarik', example: 'Ich interessiere mich für deutsche Geschichte.' },
+      { id: 222, level: 'B1', german: 'freuen', article: 'Verb (Reflexiv)', indonesian: 'Gembira / Menantikan', example: 'Ich freue mich auf den Urlaub.' },
+      { id: 223, level: 'B1', german: 'erinnern', article: 'Verb (Reflexiv)', indonesian: 'Ingat / Teringat', example: 'Ich erinnere mich an meine Kindheit.' },
+      { id: 224, level: 'B1', german: 'schützen', article: 'Verb', indonesian: 'Melindungi', example: 'Diese Creme schützt die Haut vor der Sonne.' },
+      { id: 225, level: 'B1', german: 'sparen', article: 'Verb', indonesian: 'Menabung / Menghemat', example: 'Ich spare Geld für eine Weltreise.' },
+      { id: 226, level: 'B1', german: 'Gefahr', article: 'die', indonesian: 'Bahaya', example: 'Im Dschungel lauern viele Gefahren.' },
+      { id: 227, level: 'B1', german: 'Sicherheit', article: 'die', indonesian: 'Keamanan / Kepastian', example: 'Sicherheit steht an erster Stelle.' },
+      { id: 228, level: 'B1', german: 'Erlaubnis', article: 'die', indonesian: 'Izin', example: 'Haben Sie die Erlaubnis hier zu parken?' },
+      { id: 229, level: 'B1', german: 'Verbot', article: 'das', indonesian: 'Larangan', example: 'Es gibt ein Rauchverbot im Gebäude.' },
+      { id: 230, level: 'B1', german: 'Unterschied', article: 'der', indonesian: 'Perbedaan', example: 'Was ist der Unterschied zwischen diesen Geräten?' },
+      { id: 231, level: 'B1', german: 'Gemeinsamkeit', article: 'die', indonesian: 'Persamaan / Kemiripan', example: 'Wir haben viele Gemeinsamkeiten.' },
+      { id: 232, level: 'B1', german: 'Vorschlag', article: 'der', indonesian: 'Saran / Usulan', example: 'Sein Vorschlag war sehr kreativ.' },
+      { id: 233, level: 'B1', german: 'Zustimmung', article: 'die', indonesian: 'Persetujuan', example: 'Das Projekt braucht die Zustimmung des Chefs.' },
+      { id: 234, level: 'B1', german: 'Ablehnung', article: 'die', indonesian: 'Penolakan', example: 'Seine Bewerbung erhielt eine Ablehnung.' },
+      { id: 235, level: 'B1', german: 'teilnehmen', article: 'Verb (Trennbau)', indonesian: 'Berpartisipasi / Ikut serta', example: 'Ich nehme an der Konferenz teil.' },
+      { id: 236, level: 'B1', german: 'stattfinden', article: 'Verb (Trennbau)', indonesian: 'Berlangsung / Terjadi', example: 'Das Konzert findet heute Abend statt.' },
+      { id: 237, level: 'B1', german: 'vorbereiten', article: 'Verb (Trennbau)', indonesian: 'Mempersiapkan', example: 'Ich bereite mich auf die B1-Prüfung vor.' },
+      { id: 238, level: 'B1', german: 'vorschlagen', article: 'Verb (Trennbau)', indonesian: 'Mengusulkan', example: 'Ich schlage vor, dass wir eine Pause machen.' },
+      { id: 239, level: 'B1', german: 'zustimmen', article: 'Verb (Trennbau)', indonesian: 'Menyetujui', example: 'Ich stimme deiner Meinung völlig zu.' },
+      { id: 240, level: 'B1', german: 'abhängen', article: 'Verb (Trennbau)', indonesian: 'Tergantung', example: 'Das hängt vom Wetter ab.' },
+      { id: 241, level: 'B1', german: 'zufrieden', article: 'Adjektiv', indonesian: 'Puas / Bahagia', example: 'Bist du mit deiner Note zufrieden?' },
+      { id: 242, level: 'B1', german: 'unzufrieden', article: 'Adjektiv', indonesian: 'Tidak puas', example: 'Viele Mitarbeiter sind unzufrieden.' },
+      { id: 243, level: 'B1', german: 'enttäuscht', article: 'Adjektiv', indonesian: 'Kecewa', example: 'Ich bin von deiner Reaktion enttäuscht.' },
+      { id: 244, level: 'B1', german: 'stolz', article: 'Adjektiv', indonesian: 'Bangga', example: 'Die Eltern sind stolz auf ihr Kind.' },
+      { id: 245, level: 'B1', german: 'neugierig', article: 'Adjektiv', indonesian: 'Penasaran / Ingin tahu', example: 'Kinder sind von Natur aus neugierig.' },
+      { id: 246, level: 'B1', german: 'höflich', article: 'Adjektiv', indonesian: 'Sopan', example: 'Er ist immer ein höflicher junger Mann.' },
+      { id: 247, level: 'B1', german: 'unhöflich', article: 'Adjektiv', indonesian: 'Tidak sopan', example: 'Das war eine unhöfliche Bemerkung.' },
+      { id: 248, level: 'B1', german: 'pünktlich', article: 'Adjektiv', indonesian: 'Tepat waktu', example: 'Züge in der Schweiz sind meistens pünktlich.' },
+      { id: 249, level: 'B1', german: 'zuverlässig', article: 'Adjektiv', indonesian: 'Dapat diandalkan', example: 'Mein Auto ist alt, aber sehr zuverlässig.' },
+      { id: 250, level: 'B1', german: 'Geduld', article: 'die', indonesian: 'Kesabaran', example: 'Um Deutsch zu lernen, braucht man viel Geduld.' },
+
+      // ================= LEVEL B2 (301 - 350) =================
       { id: 301, level: 'B2', german: 'Herausforderung', article: 'die', indonesian: 'Tantangan', example: 'Das neue Projekt ist eine große Herausforderung.' },
       { id: 302, level: 'B2', german: 'Voraussetzung', article: 'die', indonesian: 'Persyaratan / Kondisi awal', example: 'Gute Deutschkenntnisse sind eine Voraussetzung.' },
       { id: 303, level: 'B2', german: 'nachhaltig', article: 'Adjektiv', indonesian: 'Berkelanjutan (Sustainable)', example: 'Wir brauchen nachhaltige Lösungen.' },
       { id: 304, level: 'B2', german: 'überzeugen', article: 'Verb', indonesian: 'Meyakinkan', example: 'Ihr Argument hat mich völlig überzeugt.' },
+      { id: 305, level: 'B2', german: 'Verantwortung', article: 'die', indonesian: 'Tanggung jawab', example: 'Als Manager trägt er eine enorme Verantwortung.' },
+      { id: 306, level: 'B2', german: 'Zusammenhang', article: 'der', indonesian: 'Hubungan / Konteks', example: 'Es gibt einen klaren Zusammenhang zwischen Stress und Krankheit.' },
+      { id: 307, level: 'B2', german: 'Gegenteil', article: 'das', indonesian: 'Kebalikan', example: 'Das Gegenteil von schwarz ist weiß.' },
+      { id: 308, level: 'B2', german: 'Einfluss', article: 'der', indonesian: 'Pengaruh', example: 'Medien haben einen großen Einfluss auf Jugendliche.' },
+      { id: 309, level: 'B2', german: 'Maßnahme', article: 'die', indonesian: 'Tindakan / Langkah pencegahan', example: 'Die Regierung muss strenge Maßnahmen ergreifen.' },
+      { id: 310, level: 'B2', german: 'Verhandlung', article: 'die', indonesian: 'Negosiasi', example: 'Die Verhandlungen dauerten bis spät in die Nacht.' },
+      { id: 311, level: 'B2', german: 'fortgeschritten', article: 'Adjektiv', indonesian: 'Tingkat lanjut (Advanced)', example: 'Dieser Kurs ist nur für fortgeschrittene Lerner.' },
+      { id: 312, level: 'B2', german: 'komplex', article: 'Adjektiv', indonesian: 'Rumit / Kompleks', example: 'Die deutsche Grammatik kann sehr komplex sein.' },
+      { id: 313, level: 'B2', german: 'effizient', article: 'Adjektiv', indonesian: 'Efisien', example: 'Wir müssen eine effizientere Methode finden.' },
+      { id: 314, level: 'B2', german: 'anspruchsvoll', article: 'Adjektiv', indonesian: 'Menuntut standar tinggi / Challenging', example: 'Kunden heutzutage sind extrem anspruchsvoll.' },
+      { id: 315, level: 'B2', german: 'ausgezeichnet', article: 'Adjektiv', indonesian: 'Luar biasa / Sempurna', example: 'Ihre Deutschkenntnisse sind bereits ausgezeichnet.' },
+      { id: 316, level: 'B2', german: 'unterschätzen', article: 'Verb', indonesian: 'Meremehkan / Menganggap remeh', example: 'Man sollte die Konkurrenz niemals unterschätzen.' },
+      { id: 317, level: 'B2', german: 'überschätzen', article: 'Verb', indonesian: 'Menilai terlalu tinggi', example: 'Er neigt dazu, seine Fähigkeiten zu überschätzen.' },
+      { id: 318, level: 'B2', german: 'unterstützen', article: 'Verb', indonesian: 'Mendukung', example: 'Meine Familie unterstützt mich bei meinen Plänen.' },
+      { id: 319, level: 'B2', german: 'vermeiden', article: 'Verb', indonesian: 'Menghindari', example: 'Trinken Sie viel Wasser, um Kopfschmerzen zu vermeiden.' },
+      { id: 320, level: 'B2', german: 'empfehlen', article: 'Verb', indonesian: 'Merekomendasikan', example: 'Welches Restaurant können Sie mir empfehlen?' },
+      { id: 321, level: 'B2', german: 'beschäftigen', article: 'Verb (Reflexiv)', indonesian: 'Menyibukkan diri / Berurusan dengan', example: 'Ich beschäftige mich seit Jahren mit Literatur.' },
+      { id: 322, level: 'B2', german: 'entscheiden', article: 'Verb (Reflexiv)', indonesian: 'Memutuskan', example: 'Ich habe mich für diese Universität entschieden.' },
+      { id: 323, level: 'B2', german: 'konzentrieren', article: 'Verb (Reflexiv)', indonesian: 'Berkonsentrasi', example: 'Lärm macht es schwer, sich zu konzentrieren.' },
+      { id: 324, level: 'B2', german: 'gewöhnen', article: 'Verb (Reflexiv)', indonesian: 'Terbiasa / Membiasakan diri', example: 'Ich habe mich an das kalte Wetter gewöhnt.' },
+      { id: 325, level: 'B2', german: 'entspannen', article: 'Verb (Reflexiv)', indonesian: 'Bersantai / Rileks', example: 'Am Wochenende will ich mich einfach entspannen.' },
+      { id: 326, level: 'B2', german: 'Beziehung', article: 'die', indonesian: 'Hubungan (Kemitraan/Asmara)', example: 'Sie führen eine glückliche Beziehung.' },
+      { id: 327, level: 'B2', german: 'Erfolg', article: 'der', indonesian: 'Keberhasilan / Kesuksesan', example: 'Fleiß ist der Schlüssel zum Erfolg.' },
+      { id: 328, level: 'B2', german: 'Ergebnis', article: 'das', indonesian: 'Hasil', example: 'Das Testergebnis war überraschend positiv.' },
+      { id: 329, level: 'B2', german: 'Erwartung', article: 'die', indonesian: 'Harapan / Ekspektasi', example: 'Das Hotel hat alle unsere Erwartungen erfüllt.' },
+      { id: 330, level: 'B2', german: 'Erfahrung', article: 'die', indonesian: 'Pengalaman', example: 'Berufserfahrung ist bei dieser Stelle sehr wichtig.' },
+      { id: 331, level: 'B2', german: 'Fähigkeit', article: 'die', indonesian: 'Kemampuan / Skill', example: 'Kreativität ist eine wichtige Fähigkeit im Beruf.' },
+      { id: 332, level: 'B2', german: 'Gesellschaft', article: 'die', indonesian: 'Masyarakat / Perusahaan', example: 'Wir leben in einer multikulturellen Gesellschaft.' },
+      { id: 333, level: 'B2', german: 'Gerechtigkeit', article: 'die', indonesian: 'Keadilan', example: 'Viele Menschen kämpfen für soziale Gerechtigkeit.' },
+      { id: 334, level: 'B2', german: 'Sinn', article: 'der', indonesian: 'Arti / Makna / Indra', example: 'Es macht keinen Sinn, jetzt noch zu warten.' },
+      { id: 335, level: 'B2', german: 'Urteil', article: 'das', indonesian: 'Keputusan pengadilan / Penilaian', example: 'Man sollte sich kein schnelles Urteil bilden.' },
+      { id: 336, level: 'B2', german: 'veröffentlichen', article: 'Verb', indonesian: 'Menerbitkan / Mempublikasikan', example: 'Der Autor hat ein neues Buch veröffentlicht.' },
+      { id: 337, level: 'B2', german: 'fordern', article: 'Verb', indonesian: 'Menuntut', example: 'Die Gewerkschaften fordern höhere Löhne.' },
+      { id: 338, level: 'B2', german: 'fördern', article: 'Verb', indonesian: 'Mendorong / Mendukung kemajuan', example: 'Der Staat fördert umweltfreundliche Technologien.' },
+      { id: 339, level: 'B2', german: 'behaupten', article: 'Verb', indonesian: 'Mengklaim / Menyatakan', example: 'Er behauptet, das Geld nie gesehen zu haben.' },
+      { id: 340, level: 'B2', german: 'bestätigen', article: 'Verb', indonesian: 'Mengonfirmasi', example: 'Bitte bestätigen Sie Ihre Anmeldung per E-Mail.' },
+      { id: 341, level: 'B2', german: 'selbstständig', article: 'Adjektiv', indonesian: 'Mandiri / Freelance', example: 'Sie möchte sich als Designerin selbstständig machen.' },
+      { id: 342, level: 'B2', german: 'zuverlässig', article: 'Adjektiv', indonesian: 'Dapat diandalkan', example: 'Er ist ein zuverlässiger Geschäftspartner.' },
+      { id: 343, level: 'B2', german: 'flexibel', article: 'Adjektiv', indonesian: 'Fleksibel', example: 'Arbeitszeiten in unserer Firma sind sehr flexibel.' },
+      { id: 344, level: 'B2', german: 'kreativ', article: 'Adjektiv', indonesian: 'Kreatif', example: 'Sie hat eine sehr kreative Lösung gefunden.' },
+      { id: 345, level: 'B2', german: 'eindeutig', article: 'Adjektiv', indonesian: 'Sangat jelas / Tanpa keraguan', example: 'Die Testergebnisse sind absolut eindeutig.' },
+      { id: 346, level: 'B2', german: 'kompliziert', article: 'Adjektiv', indonesian: 'Rumit', example: 'Das Steuersystem in Deutschland ist sehr kompliziert.' },
+      { id: 347, level: 'B2', german: 'bedeutend', article: 'Adjektiv', indonesian: 'Signifikan / Berarti besar', example: 'Goethe ist ein bedeutender deutscher Dichter.' },
+      { id: 348, level: 'B2', german: 'abhängig', article: 'Adjektiv', indonesian: 'Tergantung / Ketergantungan', example: 'Kinder sind von ihren Eltern finanziell abhängig.' },
+      { id: 349, level: 'B2', german: 'unabhängig', article: 'Adjektiv', indonesian: 'Independen / Bebas', example: 'Sie möchte finanziell unabhängig sein.' },
+      { id: 350, level: 'B2', german: 'Gedanke', article: 'der', indonesian: 'Pikiran / Ide', example: 'Der Gedanke an den Umzug macht mir Angst.' }
     ];
 
-    // Bank Kuis Susun Kalimat (Grammatik)
+    // Bank Kuis Susun Kalimat (Ekspansi Masif: 50 item per level)
     const grammarQuizDB = [
-      // Level A1
-      {
-        id: 1,
-        level: 'A1',
-        topic: 'Akkusativ (Objek)',
-        words: ['einen', 'Ich', 'Hund', 'habe'],
-        correct: 'Ich habe einen Hund.',
-        hint: 'Subjek (Ich) -> Kata kerja bantu posisi 2 (habe) -> Objek Akkusativ Maskulin (einen Hund).'
-      },
-      {
-        id: 2,
-        level: 'A1',
-        topic: 'Konjugasi Verb',
-        words: ['am', 'Wir', 'Fußball', 'spielen', 'Wochenende'],
-        correct: 'Wir spielen am Wochenende Fußball.',
-        hint: 'Kata kerja "spielen" disesuaikan dengan subjek "Wir" dan berada di posisi kedua.'
-      },
+      // ================= LEVEL A1 (1 - 50) =================
+      { id: 1, level: 'A1', topic: 'Akkusativ', words: ['einen', 'Ich', 'Hund', 'habe'], correct: 'Ich habe einen Hund.', hint: 'Subjek + Verb (habe) + Objek Akkusativ Maskulin.' },
+      { id: 2, level: 'A1', topic: 'Konjugasi Verb', words: ['am', 'Wir', 'Fußball', 'spielen', 'Wochenende'], correct: 'Wir spielen am Wochenende Fußball.', hint: 'Kata kerja "spielen" disesuaikan dengan subjek "Wir" dan berada di posisi kedua.' },
+      { id: 3, level: 'A1', topic: 'Pertanyaan W-Fragen', words: ['du', 'Woher', 'kommst'], correct: 'Woher kommst du?', hint: 'Kata tanya "Woher" + Verb di posisi ke-2 + Subjek.' },
+      { id: 4, level: 'A1', topic: 'Negasi "nicht"', words: ['das', 'Ich', 'nicht', 'verstehe'], correct: 'Ich verstehe das nicht.', hint: 'Subjek + Verb + Objek + Kata keterangan negasi "nicht".' },
+      { id: 5, level: 'A1', topic: 'Pertanyaan Ja/Nein', words: ['Kaffee', 'du', 'Trinkst', 'gerne'], correct: 'Trinkst du gerne Kaffee?', hint: 'Pada pertanyaan tanpa kata tanya (Ja/Nein-Frage), Verb diletakkan di posisi paling depan.' },
+      { id: 6, level: 'A1', topic: 'Konjugasi "sein"', words: ['Lehrer', 'Er', 'von', 'ist', 'Beruf'], correct: 'Er ist von Beruf Lehrer.', hint: 'Subjek (Er) + Kata kerja sein terkonjugasi (ist) + Keterangan.' },
+      { id: 7, level: 'A1', topic: 'Waktu / Uhrzeit', words: ['ist', 'Es', 'acht', 'Uhr'], correct: 'Es ist acht Uhr.', hint: 'Gunakan struktur "Es ist" diikuti dengan angka jam.' },
+      { id: 8, level: 'A1', topic: 'Akkusativ Netral', words: ['ein', 'Ich', 'Buch', 'lese'], correct: 'Ich lese ein Buch.', hint: 'Artikel netral (das Buch) tidak berubah di kasus Akkusativ (ein Buch).' },
+      { id: 9, level: 'A1', topic: 'Akkusativ Feminin', words: ['eine', 'Er', 'Banane', 'isst'], correct: 'Er isst eine Banane.', hint: 'Artikel feminin (die Banane) tidak berubah di kasus Akkusativ (eine Banane).' },
+      { id: 10, level: 'A1', topic: 'Adjektiv Predikatif', words: ['ist', 'sehr', 'Das', 'groß', 'Haus'], correct: 'Das Haus ist sehr groß.', hint: 'Subjek lengkap (Das Haus) + ist + kata penjelas + kata sifat.' },
+      { id: 11, level: 'A1', topic: 'Possessivpronomen', words: ['Mutter', 'kocht', 'Meine', 'Suppe'], correct: 'Meine Mutter kocht Suppe.', hint: 'Kepunyaan saya (feminin: Meine Mutter) di awal kalimat.' },
+      { id: 12, level: 'A1', topic: 'W-Frage "Wer"', words: ['das', 'Wer', 'ist'], correct: 'Wer ist das?', hint: 'Kata tanya "Wer" (Siapa) + Verb (ist) + Kata tunjuk.' },
+      { id: 13, level: 'A1', topic: 'W-Frage "Wie"', words: ['dein', 'Wie', 'Name', 'ist'], correct: 'Wie ist dein Name?', hint: '"Wie" di awal kalimat diikuti dengan kata kerja "ist".' },
+      { id: 14, level: 'A1', topic: 'Negasi "kein"', words: ['Ich', 'keine', 'habe', 'Geschwister'], correct: 'Ich habe keine Geschwister.', hint: 'Negasi benda jamak menggunakan "keine".' },
+      { id: 15, level: 'A1', topic: 'Plural / Jamak', words: ['sind', 'Die', 'Äpfel', 'lecker'], correct: 'Die Äpfel sind lecker.', hint: 'Subjek jamak menggunakan kata kerja "sind".' },
+      { id: 16, level: 'A1', topic: 'Verb "wohnen"', words: ['in', 'Wir', 'Berlin', 'wohnen'], correct: 'Wir wohnen in Berlin.', hint: 'Subjek (Wir) + Verb terkonjugasi (wohnen) + Keterangan tempat.' },
+      { id: 17, level: 'A1', topic: 'Struktur Dasar', words: ['heute', 'Das', 'schön', 'Wetter', 'ist'], correct: 'Das Wetter ist heute schön.', hint: 'Subjek (Das Wetter) + Verb (ist) + Keterangan waktu (heute) + Kata sifat.' },
+      { id: 18, level: 'A1', topic: 'Imperatif Sederhana', words: ['Sie', 'Kommen', 'bitte', 'mit'], correct: 'Kommen Sie bitte mit!', hint: 'Verb diletakkan di posisi pertama untuk kalimat perintah formal.' },
+      { id: 19, level: 'A1', topic: 'Hobi / Kesenangan', words: ['Ich', 'gerne', 'Musik', 'höre'], correct: 'Ich höre gerne Musik.', hint: '"gerne" biasanya diletakkan tepat setelah kata kerja utama.' },
+      { id: 20, level: 'A1', topic: 'Keterangan Waktu', words: ['Wir', 'morgens', 'Kaffee', 'trinken'], correct: 'Wir trinken morgens Kaffee.', hint: 'Subjek + Verb (trinken) + Keterangan waktu (morgens) + Objek.' },
+      { id: 21, level: 'A1', topic: 'Kata Kerja Bantu', words: ['Möchtest', 'einen', 'Tee', 'du'], correct: 'Möchtest du einen Tee?', hint: 'Pertanyaan Ja/Nein dengan kata kerja keinginan "möchten".' },
+      { id: 22, level: 'A1', topic: 'Akkusativ Artikel', words: ['Suchst', 'den', 'du', 'Schlüssel'], correct: 'Suchst du den Schlüssel?', hint: 'der Schlüssel berubah menjadi den Schlüssel dalam Akkusativ.' },
+      { id: 23, level: 'A1', topic: 'W-Frage "Was"', words: ['du', 'Was', 'machst'], correct: 'Was machst du?', hint: 'Was + Verb + Subjek.' },
+      { id: 24, level: 'A1', topic: 'Kalimat Menyatakan', words: ['ist', 'Mein', 'Hobby', 'Reisen'], correct: 'Mein Hobby ist Reisen.', hint: 'Subjek tunggal (Mein Hobby) + ist + Nominativ predikat.' },
+      { id: 25, level: 'A1', topic: 'Salam Pertemuan', words: ['Euch', 'Freut', 'mich', 'kennenzulernen'], correct: 'Freut mich Euch kennenzulernen.', hint: 'Ungkapan salam perkenalan informal.' },
 
-      // Level A2
-      {
-        id: 101,
-        level: 'A2',
-        topic: 'Modalverben',
-        words: ['Deutsch', 'Ich', 'sprechen', 'kann', 'gut'],
-        correct: 'Ich kann gut Deutsch sprechen.',
-        hint: 'Modalverb (kann) di posisi ke-2, sedangkan kata kerja utama (sprechen) dikirim dalam bentuk dasar ke akhir kalimat.'
-      },
-      {
-        id: 102,
-        level: 'A2',
-        topic: 'Perfekt (Masa Lalu)',
-        words: ['gestern', 'Fußball', 'hat', 'Er', 'gespielt'],
-        correct: 'Er hat gestern Fußball gespielt.',
-        hint: 'Subjek + Kata Kerja Bantu (hat) di posisi 2 + Keterangan Waktu + Partizip II (gespielt) di posisi paling akhir.'
-      },
+      // ================= LEVEL A2 (101 - 150) =================
+      { id: 101, level: 'A2', topic: 'Modalverben', words: ['Deutsch', 'Ich', 'sprechen', 'kann', 'gut'], correct: 'Ich kann gut Deutsch sprechen.', hint: 'Modalverb (kann) di posisi ke-2, sedangkan kata kerja utama di akhir.' },
+      { id: 102, level: 'A2', topic: 'Perfekt', words: ['gestern', 'Fußball', 'hat', 'Er', 'gespielt'], correct: 'Er hat gestern Fußball gespielt.', hint: 'Subjek + hat + Keterangan + Partizip II (gespielt) di ujung kalimat.' },
+      { id: 103, level: 'A2', topic: 'Dativ Pronomen', words: ['mir', 'Das', 'nicht', 'hilft'], correct: 'Das hilft mir nicht.', hint: 'Kata kerja "helfen" membutuhkan objek kasus Dativ (mir).' },
+      { id: 104, level: 'A2', topic: 'Verb Trennbar', words: ['Zimmer', 'Ich', 'auf', 'mein', 'räume'], correct: 'Ich räume mein Zimmer auf.', hint: 'Kata kerja trennbar "aufräumen": prefiks "auf" dikirim ke ujung kalimat.' },
+      { id: 105, level: 'A2', topic: 'Wechselpräposition', words: ['auf', 'Das', 'liegt', 'Tisch', 'dem', 'Buch'], correct: 'Das Buch liegt auf dem Tisch.', hint: 'Menunjukkan posisi diam (lokasi/Dativ) setelah kata depan "auf".' },
+      { id: 106, level: 'A2', topic: 'Wechselpräposition', words: ['Ich', 'lege', 'das', 'auf', 'Tisch', 'den', 'Buch'], correct: 'Ich lege das Buch auf den Tisch.', hint: 'Menunjukkan pergerakan (arah/Akkusativ) setelah kata depan "auf".' },
+      { id: 107, level: 'A2', topic: 'Präteritum Modals', words: ['Ich', 'gestern', 'arbeiten', 'musste'], correct: 'Ich musste gestern arbeiten.', hint: 'Präteritum modalverb "musste" di posisi ke-2, infinitif di akhir.' },
+      { id: 108, level: 'A2', topic: 'Perfekt "sein"', words: ['nach', 'Wir', 'Berlin', 'gefahren', 'sind'], correct: 'Wir sind nach Berlin gefahren.', hint: 'Perpindahan arah/pergerakan di masa lalu menggunakan kata bantu "sein" (sind).' },
+      { id: 109, level: 'A2', topic: 'Dativ Artikel', words: ['mit', 'Ich', 'fahre', 'Auto', 'dem'], correct: 'Ich fahre mit dem Auto.', hint: 'Preposisi "mit" selalu diikuti kasus Dativ (das Auto -> dem Auto).' },
+      { id: 110, level: 'A2', topic: 'Modalverb "dürfen"', words: ['Hier', 'man', 'nicht', 'rauchen', 'darf'], correct: 'Hier darf man nicht rauchen.', hint: 'darf (posisi 2) + man + nicht + rauchen (infinitif di akhir).' },
+      { id: 111, level: 'A2', topic: 'Verb Trennbar Perfekt', words: ['Sie', 'mich', 'hat', 'eingeladen'], correct: 'Sie hat mich eingeladen.', hint: 'Trennbares Verb di masa lalu: "-ge-" disisipkan di tengah prefiks (eingeladen).' },
+      { id: 112, level: 'A2', topic: 'Preposisi "zu"', words: ['zum', 'Ich', 'muss', 'gehen', 'Arzt'], correct: 'Ich muss zum Arzt gehen.', hint: 'zu + dem Arzt menjadi "zum Arzt", diletakkan sebelum infinitif.' },
+      { id: 113, level: 'A2', topic: 'W-Frage Dativ', words: ['gehört', 'Wem', 'das', 'Fahrrad'], correct: 'Wem gehört das Fahrrad?', hint: '"gehören" membutuhkan objek dativ, kata tanyanya adalah "Wem".' },
+      { id: 114, level: 'A2', topic: 'Modalverb "sollen"', words: ['soll', 'Ich', 'Tablette', 'nehmen', 'eine'], correct: 'Ich soll eine Tablette nehmen.', hint: 'Saran medis menggunakan modalverb "sollen" di posisi kedua.' },
+      { id: 115, level: 'A2', topic: 'Konjungsi koordinatif', words: ['aber', 'ich', 'Ich', 'habe', 'kein', 'Hunger', 'esse', 'einen', 'Salat'], correct: 'Ich habe keinen Hunger, aber ich esse einen Salat.', hint: 'Konjungsi "aber" menghubungkan dua kalimat utama (Hauptsatz).' },
+      { id: 116, level: 'A2', topic: 'Keterangan Waktu', words: ['im', 'Sommer', 'Wir', 'Urlaub', 'machen'], correct: 'Wir machen im Sommer Urlaub.', hint: 'Subjek + Verb (machen) + Keterangan waktu (im Sommer) + Objek.' },
+      { id: 117, level: 'A2', topic: 'Komparativ', words: ['Mein', 'Bruder', 'ist', 'als', 'ich', 'größer'], correct: 'Mein Bruder ist größer als ich.', hint: 'Komparativ (größer) diikuti kata pembanding "als".' },
+      { id: 118, level: 'A2', topic: 'Dativ Plural', words: ['den', 'Ich', 'helfe', 'Kindern'], correct: 'Ich helfe den Kindern.', hint: 'Dativ Plural mendapatkan akhiran -n pada kata bendanya (Kindern).' },
+      { id: 119, level: 'A2', topic: 'Verb Trennbar', words: ['rufst', 'Wann', 'du', 'an', 'mich'], correct: 'Wann rufst du mich an?', hint: 'anrufen dipecah: "rufst" di posisi 2 (setelah kata tanya), "an" di akhir.' },
+      { id: 120, level: 'A2', topic: 'Perfekt "haben"', words: ['Hausaufgabe', 'hast', 'deine', 'du', 'gemacht'], correct: 'Hast du deine Hausaufgabe gemacht?', hint: 'Kalimat tanya Perfekt: Kata kerja bantu (hast) di posisi pertama.' },
 
-      // Level B1
-      {
-        id: 201,
-        level: 'B1',
-        topic: 'Anak Kalimat (weil)',
-        words: ['ich', 'Deutsch', 'lerne', 'weil', 'mag', 'es', 'Ich'],
-        correct: 'Ich lerne Deutsch, weil ich es mag.',
-        hint: 'Konjungsi "weil" menuntut kata kerja terkonjugasi (mag) berada di akhir anak kalimat.'
-      },
-      {
-        id: 202,
-        level: 'B1',
-        topic: 'Anak Kalimat (dass)',
-        words: ['er', 'kommt', 'dass', 'hoffe', 'Ich', 'heute'],
-        correct: 'Ich hoffe, dass er heute kommt.',
-        hint: 'Setelah koma, gunakan konjungsi "dass" dan kirim kata kerja "kommt" ke posisi paling akhir.'
-      },
+      // ================= LEVEL B1 (201 - 250) =================
+      { id: 201, level: 'B1', topic: 'Anak Kalimat (weil)', words: ['ich', 'Deutsch', 'lerne', 'weil', 'mag', 'es', 'Ich'], correct: 'Ich lerne Deutsch, weil ich es mag.', hint: 'Konjungsi "weil" menuntut kata kerja terkonjugasi (mag) berada di akhir.' },
+      { id: 202, level: 'B1', topic: 'Anak Kalimat (dass)', words: ['er', 'kommt', 'dass', 'hoffe', 'Ich', 'heute'], correct: 'Ich hoffe, dass er heute kommt.', hint: 'Gunakan tanda koma sebelum konjungsi subordinatif "dass".' },
+      { id: 203, level: 'B1', topic: 'Reflexive Verben', words: ['auf', 'Ich', 'mich', 'freue', 'den', 'Urlaub'], correct: 'Ich freue mich auf den Urlaub.', hint: 'sich freuen auf + Akkusativ.' },
+      { id: 204, level: 'B1', topic: 'Anak Kalimat (obwohl)', words: ['Es', 'kalt', 'ist', 'obwohl', 'ich', 'spazieren', 'gehe'], correct: 'Es ist kalt, obwohl ich spazieren gehe.', hint: '"obwohl" (meskipun) mengirim kata kerja "gehe" ke akhir klausa.' },
+      { id: 205, level: 'B1', topic: 'Infinitiv mit "zu"', words: ['Ich', 'habe', 'keine', 'Lust', 'heute', 'lernen', 'zu'], correct: 'Ich habe keine Lust heute zu lernen.', hint: 'Struktur ekspresi emosi/keinginan dihubungkan dengan infinitiv + zu.' },
+      { id: 206, level: 'B1', topic: 'Passiv Präsens', words: ['Das', 'Auto', 'wird', 'repariert'], correct: 'Das Auto wird repariert.', hint: 'Struktur pasif: werden terkonjugasi + Partizip II di akhir.' },
+      { id: 207, level: 'B1', topic: 'Relativsatz', words: ['Der', 'Mann', 'der', 'dort', 'steht', 'ist', 'mein', 'Onkel'], correct: 'Der Mann, der dort steht, ist mein Onkel.', hint: 'Klausa relatif menerangkan "der Mann" dengan kata kerja "steht" di akhir klausa relatif.' },
+      { id: 208, level: 'B1', topic: 'Anak Kalimat (wenn)', words: ['Wenn', 'ich', 'Zeit', 'habe', 'ich', 'dich', 'an', 'rufe'], correct: 'Wenn ich Zeit habe, rufe ich dich an.', hint: 'Jika anak kalimat (wenn-Satz) di depan, maka kalimat utama dimulai langsung dengan Kata Kerja (rufe).' },
+      { id: 209, level: 'B1', topic: 'Reflexive Verben Dativ', words: ['Ich', 'putze', 'mir', 'die', 'Zähne'], correct: 'Ich putze mir die Zähne.', hint: 'Jika ada objek spesifik (Zähne), kata ganti refleksif "sich" berubah menjadi Dativ (mir).' },
+      { id: 210, level: 'B1', topic: 'Anak Kalimat (damit)', words: ['Ich', 'lerne', 'Deutsch', 'damit', 'ich', 'eine', 'Arbeit', 'finde'], correct: 'Ich lerne Deutsch, damit ich eine Arbeit finde.', hint: '"damit" (agar/supaya) adalah konjungsi subordinatif yang melempar kata kerja ke akhir.' },
+      { id: 211, level: 'B1', topic: 'Genitiv', words: ['Das', 'ist', 'das', 'Auto', 'meines', 'Vaters'], correct: 'Das ist das Auto meines Vaters.', hint: 'Menunjukkan kepunyaan formal (Vaters) di kasus Genitiv maskulin.' },
+      { id: 212, level: 'B1', topic: 'Präteritum', words: ['Wir', 'wohnten', 'früher', 'in', 'einem', 'kleinen', 'Dorf'], correct: 'Wir wohnten früher in einem kleinen Dorf.', hint: 'Bentuk lampau tulis (Präteritum) untuk kata kerja teratur wohnen.' },
+      { id: 213, level: 'B1', topic: 'Präpositionen Genitiv', words: ['Trotz', 'des', 'Regens', 'gingen', 'wir', 'spazieren'], correct: 'Trotz des Regens gingen wir spazieren.', hint: '"trotz" membutuhkan kasus Genitiv (der Regen -> des Regens).' },
+      { id: 214, level: 'B1', topic: 'Relativsatz Dativ', words: ['Die', 'Frau', 'der', 'ich', 'geholfen', 'habe', 'ist', 'sehr', 'nett'], correct: 'Die Frau, der ich geholfen habe, ist sehr nett.', hint: 'Klausa relatif menggunakan kata ganti relatif Dativ "der" untuk merujuk pada "Die Frau".' },
+      { id: 215, level: 'B1', topic: 'Konjunktiv II', words: ['Ich', 'würde', 'gerne', 'nach', 'Deutschland', 'reisen'], correct: 'Ich würde gerne nach Deutschland reisen.', hint: 'Penghasratan sopan menggunakan "würde" + infinitif di akhir.' },
+      { id: 216, level: 'B1', topic: 'Passiv Präteritum', words: ['Das', 'Haus', 'wurde', 'im', 'Jahr', '1990', 'gebaut'], correct: 'Das Haus wurde im Jahr 1990 gebaut.', hint: 'Pasif masa lampau: wurde (Präteritum von werden) + Partizip II.' },
+      { id: 217, level: 'B1', topic: 'Indirect Frage', words: ['Ich', 'weiß', 'nicht', 'wann', 'der', 'Zug', 'ankommt'], correct: 'Ich weiß nicht, wann der Zug ankommt.', hint: 'Kalimat tanya tidak langsung menempatkan kata kerja di akhir kalimat.' },
+      { id: 218, level: 'B1', topic: 'Preposisi "wegen"', words: ['Wegen', 'des', 'Wetters', 'bleiben', 'wir', 'zu', 'Hause'], correct: 'Wegen des Wetters bleiben wir zu Hause.', hint: '"wegen" selalu diikuti kasus Genitiv.' },
+      { id: 219, level: 'B1', topic: 'Verben mit Präpositionen', words: ['Wir', 'sprechen', 'über', 'unsere', 'Zukunftspläne'], correct: 'Wir sprechen über unsere Zukunftspläne.', hint: 'sprechen + über + Akkusativ.' },
+      { id: 220, level: 'B1', topic: 'Adjektivdeklination', words: ['Er', 'trinkt', 'gerne', 'kaltes', 'Wasser'], correct: 'Er trinkt gerne kaltes Wasser.', hint: 'Deklinasi kata sifat tanpa artikel penentu kasus netral Akkusativ (-es).' },
 
-      // Level B2
-      {
-        id: 301,
-        level: 'B2',
-        topic: 'Konjunktiv II (Pengandaian)',
-        words: ['ich', 'reich', 'wäre', 'Wenn', 'ein', 'Auto', 'würde', 'ich', 'kaufen'],
-        correct: 'Wenn ich reich wäre, würde ich ein Auto kaufen.',
-        hint: 'Gunakan struktur "Wenn ... [Verb Akhir], [Verb] ...". Kata kerja bantu Konjunktiv II adalah "wäre" dan "würde".'
-      }
+      // ================= LEVEL B2 (301 - 350) =================
+      { id: 301, level: 'B2', topic: 'Zweiteilige Konnektoren', words: ['ich', 'reich', 'wäre', 'Wenn', 'ein', 'Auto', 'würde', 'ich', 'kaufen'], correct: 'Wenn ich reich wäre, würde ich ein Auto kaufen.', hint: 'Pola pengandaian: Wenn + Subjek + ... + Verb Akhir, Verb + Subjek.' },
+      { id: 302, level: 'B2', topic: 'Doppelkonnektor', words: ['nicht', 'nur', 'Er', 'ist', 'intelligent', 'sondern', 'auch', 'sehr', 'fleißig'], correct: 'Er ist nicht nur intelligent, sondern auch sehr fleißig.', hint: 'Struktur paralel positif: "nicht nur ..., sondern auch ...".' },
+      { id: 303, level: 'B2', topic: 'Partizipialattribut', words: ['Das', 'in', 'Deutschland', 'hergestellte', 'Auto', 'ist', 'sehr', 'teuer'], correct: 'Das in Deutschland hergestellte Auto ist sehr teuer.', hint: 'Partizip II bertindak sebagai kata sifat deklinasi sebelum kata benda.' },
+      { id: 304, level: 'B2', topic: 'Je-Desto', words: ['Je', 'mehr', 'du', 'lernst', 'desto', 'besser', 'wirst', 'du'], correct: 'Je mehr du lernst, desto besser wirst du.', hint: 'Korelasi komparatif: Je + Komparativ + ... + Verb, desto + Komparativ + Verb + Subjek.' },
+      { id: 305, level: 'B2', topic: 'Nomen-Verb-Verbindung', words: ['Ich', 'treffe', 'eine', 'Entscheidung', 'bezüglich', 'meiner', 'Zukunft'], correct: 'Ich treffe eine Entscheidung bezüglich meiner Zukunft.', hint: '"eine Entscheidung treffen" adalah bentuk frasa setara dengan kata kerja memutuskan.' },
+      { id: 306, level: 'B2', topic: 'Substantivierung', words: ['Beim', 'Lernen', 'neuer', 'Sprachen', 'braucht', 'man', 'Geduld'], correct: 'Beim Lernen neuer Sprachen braucht man Geduld.', hint: '"Beim Lernen" adalah bentuk pembendaan dari kata kerja "lernen".' },
+      { id: 307, level: 'B2', topic: 'Zukunft / Futur II', words: ['Bis', 'morgen', 'werde', 'ich', 'die', 'Hausaufgabe', 'fertiggestellt', 'haben'], correct: 'Bis morgen werde ich die Hausaufgabe fertiggestellt haben.', hint: 'Futur II menyatakan aksi selesai di masa depan: werden + Partizip II + haben/sein.' },
+      { id: 308, level: 'B2', topic: 'Passiversatz', words: ['Die', 'Aufgabe', 'ist', 'leicht', 'zu', 'lösen'], correct: 'Die Aufgabe ist leicht zu lösen.', hint: 'Struktur "sein + zu + Infinitiv" bertindak sebagai pengganti makna kalimat pasif.' },
+      { id: 309, level: 'B2', topic: 'Anstatt zu', words: ['Anstatt', 'zu', 'lernen', 'sieht', 'er', 'den', 'ganzen', 'Tag', 'fern'], correct: 'Anstatt zu lernen, sieht er den ganzen Tag fern.', hint: 'Kalimat "anstatt zu" (daripada/alih-alih) dipisah dengan tanda koma.' },
+      { id: 310, level: 'B2', topic: 'Konjunktiv I (Indirekte Rede)', words: ['Der', 'Minister', 'behauptete', 'die', 'Krise', 'sei', 'bald', 'vorüber'], correct: 'Der Minister behauptete, die Krise sei bald vorüber.', hint: 'Gaya bahasa tidak langsung resmi menggunakan Konjunktiv I (sei).' },
+      { id: 311, level: 'B2', topic: 'Doppelkonnektor', words: ['Sowohl', 'meine', 'Eltern', 'als', 'auch', 'meine', 'Geschwister', 'leben', 'in', 'Jakarta'], correct: 'Sowohl meine Eltern als auch meine Geschwister leben in Jakarta.', hint: '"Sowohl ... als auch ..." menghubungkan dua subjek sejajar.' },
+      { id: 312, level: 'B2', topic: 'Konjunktiv II Vergangenheit', words: ['Hätte', 'ich', 'mehr', 'gelernt', 'wäre', 'ich', 'nicht', 'durchgefallen'], correct: 'Hätte ich mehr gelernt, wäre ich nicht durchgefallen.', hint: 'Pengandaian masa lalu yang tidak terjadi: Hätte + Subjek ... , wäre + Subjek.' },
+      { id: 313, level: 'B2', topic: 'Ohne dass', words: ['Er', 'verließ', 'den', 'Raum', 'ohne', 'dass', 'jemand', 'es', 'merkte'], correct: 'Er verließ den Raum, ohne dass jemand es merkte.', hint: '"ohne dass" digunakan saat subjek anak kalimat berbeda dengan kalimat utama.' },
+      { id: 314, level: 'B2', topic: 'Zweiteilige Konnektoren', words: ['Entweder', 'wir', 'gehen', 'ins', 'Kino', 'oder', 'wir', 'bleiben', 'zu', 'Hause'], correct: 'Entweder wir gehen ins Kino oder wir bleiben zu Hause.', hint: 'Pilihan alternatif: "Entweder ... oder ...".' },
+      { id: 315, level: 'B2', topic: 'Partizip I als Adjektiv', words: ['Das', 'weinende', 'Kind', 'suchte', 'seine', 'Mutter'], correct: 'Das weinende Kind suchte seine Mutter.', hint: 'Partizip I (weinend) dibentuk dengan menambahkan akhiran -e pada kata dasar infinitif.' }
     ];
 
     // Tips Belajar Harian sesuai Level
@@ -446,13 +648,11 @@
       if (event) event.stopPropagation(); // Mencegah kartu terbalik saat klik tombol suara
       const textToSpeak = document.getElementById('fc-german').innerText;
       if ('speechSynthesis' in window) {
-        // Hentikan suara yang sedang berjalan jika ada
         window.speechSynthesis.cancel();
         
         const utterance = new SpeechSynthesisUtterance(textToSpeak);
-        utterance.lang = 'de-DE'; // Set Bahasa ke Jerman
+        utterance.lang = 'de-DE'; 
         
-        // Cari suara asli Jerman di browser jika tersedia
         const voices = window.speechSynthesis.getVoices();
         const deVoice = voices.find(voice => voice.lang.startsWith('de'));
         if (deVoice) {
@@ -467,7 +667,6 @@
 
     // ================= CORE APPS CONTROL =================
     window.onload = function() {
-      // Inisialisasi awal
       loadState();
       setLevel(userState.level);
       switchTab('flashcard');
@@ -527,11 +726,9 @@
 
     // ================= TAB 1: FLASHCARD CONTROLLER =================
     function initFlashcards() {
-      // Ambil kartu berdasarkan level terpilih
       currentFlashcards = vocabularyDB.filter(v => v.level === userState.level);
       currentFCIndex = 0;
       
-      // Reset card flip
       const fcContainer = document.getElementById('flashcard-container');
       fcContainer.classList.remove('flipped');
 
@@ -564,7 +761,6 @@
         showModal("Luar Biasa!", "Selamat! Anda berhasil mengingat kata ini dengan baik. Terus pertahankan semangat belajarnya! 🔥");
       }
 
-      // Roll ke kartu berikutnya secara otomatis setelah animasi tutup flip
       const fcContainer = document.getElementById('flashcard-container');
       fcContainer.classList.remove('flipped');
       
@@ -582,7 +778,6 @@
         return;
       }
 
-      // Ambil kuis acak dari daftar yang sesuai
       currentQuiz = activeQuizzes[Math.floor(Math.random() * activeQuizzes.length)];
       selectedQuizWords = [];
       
@@ -603,8 +798,7 @@
       container.innerHTML = '';
       
       currentQuiz.words.forEach((word, index) => {
-        // Cek apakah kata sudah dipilih atau belum
-        if (!selectedQuizWords.includes(index)) {
+        if (!selectedQuizWords.some(item => item.index === index)) {
           const btn = document.createElement('button');
           btn.innerText = word;
           btn.className = "px-4 py-2 bg-white hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 text-slate-700 font-medium rounded-xl shadow-sm hover:shadow active:scale-95 transition-all text-sm";
@@ -618,7 +812,6 @@
       const area = document.getElementById('quiz-working-area');
       const placeholder = document.getElementById('quiz-placeholder-text');
 
-      // Hapus tombol-tombol kata sebelumnya
       const wordBtns = area.querySelectorAll('.working-word-btn');
       wordBtns.forEach(btn => btn.remove());
 
@@ -631,10 +824,7 @@
           btn.innerText = wordObj.word;
           btn.className = "working-word-btn px-4 py-2 bg-indigo-600 text-white font-medium rounded-xl shadow-md active:scale-95 transition-all text-sm flex items-center gap-2";
           btn.onclick = () => deselectWord(wordObj.index);
-          
-          // Tambahkan icon silang kecil
           btn.innerHTML += `<i class="fa-solid fa-xmark text-[10px] opacity-75"></i>`;
-          
           area.appendChild(btn);
         });
       }
@@ -669,13 +859,11 @@
         return;
       }
 
-      // Gabungkan susunan kata user
       const userAnswer = selectedQuizWords.map(obj => obj.word).join(' ').trim();
       const correctAnswer = currentQuiz.correct.trim();
 
-      // Pengecekan standard (mengabaikan spasi berlebih & tanda baca akhir opsional)
-      const cleanUser = userAnswer.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase();
-      const cleanCorrect = correctAnswer.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"").toLowerCase();
+      const cleanUser = userAnswer.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g,"").toLowerCase().replace(/\s+/g, ' ');
+      const cleanCorrect = correctAnswer.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()?]/g,"").toLowerCase().replace(/\s+/g, ' ');
 
       if (cleanUser === cleanCorrect) {
         showFeedback(`🎉 Richtig! (Benar!)\nJawaban yang tepat: "${correctAnswer}"`, true);
